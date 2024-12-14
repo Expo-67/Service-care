@@ -60,7 +60,7 @@ const Page = () => {
               >
                 <a
                   className="group text-blue-400 transition-all duration-100 ease-in-out"
-                  href="./Dashboardcl"
+                  href="./dashboard-layout"
                 >
                   Login
                 </a>
