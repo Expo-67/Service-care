@@ -13,10 +13,19 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useReminders } from "../contexts/RemindersContext";
+
+type Reminder = {
+  id: number;
+  service: string;
+  date: string;
+};
 
 export default function Reminders() {
-  const { reminders, setReminders } = useReminders();
+  const [reminders, setReminders] = useState<Reminder[]>([
+    { id: 1, service: "Oil Change", date: "2023-12-15" },
+    { id: 2, service: "Tire Rotation", date: "2024-01-10" },
+    { id: 3, service: "Brake Inspection", date: "2024-02-20" },
+  ]);
   const [newService, setNewService] = useState("");
   const [newDate, setNewDate] = useState("");
 

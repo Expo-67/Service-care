@@ -1,23 +1,10 @@
-"use client";
-
 import Link from "next/link";
 import DashboardLayout from "../dashboard-layout/page";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useReminders } from "../contexts/RemindersContext";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 
 export default function Dashboard() {
-  const { reminders } = useReminders();
-
   // Mock data for the next service
   const nextServiceDate = new Date("2024-03-15");
   const today = new Date();
@@ -46,7 +33,9 @@ export default function Dashboard() {
               Manage your car service and maintenance from here.
             </p>
             <div className="space-x-4">
-              <Button>Get Started</Button>
+              <Button asChild>
+                <Link href="/get-started">Get Started</Link>
+              </Button>
               <Button variant="outline" asChild>
                 <Link href="/profile">Edit Profile</Link>
               </Button>
@@ -75,39 +64,6 @@ export default function Dashboard() {
                 {progressPercentage}% progress to next service
               </p>
             </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-xl font-semibold">
-              Upcoming Reminders
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Service</TableHead>
-                  <TableHead>Date</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {reminders.slice(0, 3).map((reminder) => (
-                  <TableRow key={reminder.id}>
-                    <TableCell>{reminder.service}</TableCell>
-                    <TableCell>{reminder.date}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-            {reminders.length > 3 && (
-              <div className="mt-4 text-center">
-                <Button variant="link" asChild>
-                  <Link href="/reminders">View all reminders</Link>
-                </Button>
-              </div>
-            )}
           </CardContent>
         </Card>
       </div>
