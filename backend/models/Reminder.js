@@ -2,7 +2,11 @@ import mongoose from "mongoose";
 
 const reminderSchema = new mongoose.Schema(
   {
-    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     service: { type: String, required: true },
     date: { type: Date, required: true },
   },

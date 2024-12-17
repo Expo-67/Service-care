@@ -1,8 +1,51 @@
 "use client";
+
+import React, { useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import gti from "../assets/gti.jpeg";
 
 const Page = () => {
+  const router = useRouter();
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch(`http://localhost:5000/api/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Login successful:", data);
+        // Store the token in localStorage or a secure cookie
+        localStorage.setItem("token", data.token);
+        // Redirect to dashboard
+        router.push("/dashboard");
+      } else {
+        const errorData = await response.json();
+        setError(errorData.error || "Invalid email or password");
+      }
+    } catch (err) {
+      console.error("Login error:", err);
+      setError("An error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="flex font-poppins items-center justify-center dark:bg-gray-900 min-w-screen min-h-screen">
       <div className="grid gap-8">
@@ -25,16 +68,21 @@ const Page = () => {
             <span className="pt-2 pb-2 font-bold text-2xl dark:text-gray-400 text-center cursor-default">
               Log-in
             </span>
-            <form action="#" method="post" className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="mb-2 dark:text-gray-400 text-lg">
-                  Username
+                <label
+                  htmlFor="email"
+                  className="mb-2 dark:text-gray-400 text-lg"
+                >
+                  Email
                 </label>
                 <input
-                  id="username"
+                  id="email"
                   className="border dark:bg-white/90 dark:text-gray-300 dark:border-gray-700 p-3 shadow-md placeholder:text-base border-gray-300 rounded-lg w-full focus:scale-105 ease-in-out duration-300"
-                  type="text"
-                  placeholder="John4"
+                  type="email"
+                  placeholder="john@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                 />
               </div>
@@ -51,19 +99,18 @@ const Page = () => {
                   className="border dark:bg-white/90 dark:text-gray-300 dark:border-gray-700 p-3 mb-2 shadow-md placeholder:text-base border-gray-300 rounded-lg w-full focus:scale-105 ease-in-out duration-300"
                   type="password"
                   placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   required
                 />
               </div>
+              {error && <p className="text-red-500">{error}</p>}
               <button
-                className="bg-gradient-to-r from-gray-500 to-gray-700 shadow-lg mt-6 p-2 text-white rounded-lg w-full hover:scale-105 hover:from-gray-500 hover:to-gray-700 transition duration-300 ease-in-out"
+                className="bg-gradient-to-r from-gray-500 to-gray-700 shadow-lg mt-6 p-2 text-white rounded-lg w-full hover:scale-105 hover:from-gray-500 hover:to-gray-700 transition duration-300 ease-in-out disabled:opacity-50"
                 type="submit"
+                disabled={isLoading}
               >
-                <a
-                  className="group text-blue-400 transition-all duration-100 ease-in-out"
-                  href="./dashboard-layout"
-                >
-                  Login
-                </a>
+                {isLoading ? "Logging in..." : "Login"}
               </button>
             </form>
           </div>

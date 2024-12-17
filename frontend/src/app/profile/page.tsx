@@ -27,9 +27,9 @@ export default function Profile() {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="flex justify-center mb-6">
-              <Avatar className="h-24 w-24">
+              <Avatar className="h-32 w-32">
                 <AvatarImage
-                  src="/placeholder.svg?height=96&width=96"
+                  src="/placeholder.svg?height=128&width=128"
                   alt={name}
                 />
                 <AvatarFallback>

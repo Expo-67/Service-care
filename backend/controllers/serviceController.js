@@ -2,16 +2,40 @@ import Service from "../models/Service.js";
 import Reminder from "../models/Reminder.js";
 
 export const logService = async (req, res) => {
-  const service = new Service({
-    ...req.body,
-    user: req.user._id,
-  });
+  // const service = new Service({
+  //   ...req.body,
+  //   user: req.user._id,
+  // });
 
+  // try {
+  //   await service.save();
+  //   res.status(201).send(service);
+  // } catch (error) {
+  //   res.status(400).send(error);
+  //}
+  const user = req.user._id;
+  console.log(user);
+  const { serviceDate, mileage, garageName, mechanicName, nextServiceMileage } =
+    req.body;
+  console.log(serviceDate);
+  console.log(mileage);
+  console.log(garageName);
+  console.log(mechanicName);
+  console.log(nextServiceMileage);
   try {
-    await service.save();
-    res.status(201).send(service);
+    const newService = await Service.create({
+      userid: user,
+      serviceDate,
+      mileage,
+      garageName,
+      mechanicName,
+      nextServiceMileage,
+    });
+    res.status(200).json(newService);
   } catch (error) {
-    res.status(400).send(error);
+    console.log(error);
+
+    res.status(500).json({ message: "Server error" });
   }
 };
 

@@ -6,8 +6,8 @@ export const signup = async (req, res) => {
   try {
     const user = new User(req.body);
     await user.save();
-    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
-    res.status(201).send({ user, token });
+    //const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
+    res.status(201).json({ user });
   } catch (error) {
     res.status(400).send(error);
   }
@@ -19,7 +19,7 @@ export const login = async (req, res) => {
     if (!user) {
       return res
         .status(401)
-        .send({ error: "Login failed! Check authentication credentials" });
+        .json({ error: "Login failed! Check authentication credentials" });
     }
     const isPasswordMatch = await bcrypt.compare(
       req.body.password,
@@ -28,7 +28,7 @@ export const login = async (req, res) => {
     if (!isPasswordMatch) {
       return res
         .status(401)
-        .send({ error: "Login failed! Check authentication credentials" });
+        .json({ error: "Login failed! Check authentication credentials" });
     }
     const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
     req.session.user = user;

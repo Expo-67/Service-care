@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import DashboardLayout from "../dashboard-layout/page";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -29,6 +30,7 @@ const initialServiceItems: ServiceItems = {
 };
 
 export default function LogService() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     serviceDate: "",
     mileage: "",
@@ -37,6 +39,8 @@ export default function LogService() {
     nextServiceMileage: "",
     serviceItems: initialServiceItems,
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [message, setMessage] = useState({ type: "", content: "" });
 
   const handleItemChange = (
     itemKey: keyof ServiceItems,
@@ -57,9 +61,48 @@ export default function LogService() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Service logged:", formData);
+    setIsSubmitting(true);
+    setMessage({ type: "", content: "" });
+
+    try {
+      const response = await fetch("http://localhost:5000/api/services/log", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(formData),
+      });
+
+      let responseData;
+      const responseText = await response.text();
+      try {
+        responseData = JSON.parse(responseText);
+      } catch (parseError) {
+        console.error("Error parsing response:", parseError);
+        throw new Error(`Invalid response from server: ${responseText}`);
+      }
+
+      if (response.ok) {
+        setMessage({ type: "success", content: "Service logged successfully" });
+        setTimeout(() => {
+          router.push("/service-records");
+        }, 2000);
+      } else {
+        throw new Error(responseData.message || "Failed to log service");
+      }
+    } catch (error) {
+      console.error("Error logging service:", error);
+      setMessage({
+        type: "error",
+        content:
+          error instanceof Error ? error.message : "Failed to log service",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -71,6 +114,17 @@ export default function LogService() {
           </CardTitle>
         </CardHeader>
         <CardContent>
+          {message.content && (
+            <div
+              className={`mb-4 p-2 rounded ${
+                message.type === "success"
+                  ? "bg-green-100 text-green-800"
+                  : "bg-red-100 text-red-800"
+              }`}
+            >
+              {message.content}
+            </div>
+          )}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="serviceDate">Service Date</Label>
@@ -179,8 +233,8 @@ export default function LogService() {
               />
             </div>
 
-            <Button type="submit" className="w-full">
-              Log Service
+            <Button type="submit" className="w-full" disabled={isSubmitting}>
+              {isSubmitting ? "Logging Service..." : "Log Service"}
             </Button>
           </form>
         </CardContent>
