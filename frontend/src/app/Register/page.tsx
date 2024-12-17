@@ -45,7 +45,7 @@ const Page: React.FC = () => {
         );
         console.log("Signup failed:", data);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError("An error occurred. Please try again.");
       console.error("Signup error:", err);
     } finally {

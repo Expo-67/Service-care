@@ -45,7 +45,7 @@ export default function AISuggestions() {
               Pay attention to unusual noises or vibrations and address them
               promptly.
             </li>
-            <li>Follow your vehicle's recommended maintenance schedule.</li>
+            <li>Follow your vehicles recommended maintenance schedule.</li>
           </ul>
         </div>
         <div className="bg-white shadow-lg rounded-lg p-6">

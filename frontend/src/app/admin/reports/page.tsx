@@ -78,9 +78,7 @@ export default function AdminReports() {
     if (!user) return null;
 
     const labels = user.services.map((s) => s.name);
-    const data = user.services.map((_, index) =>
-      Math.floor(Math.random() * 100)
-    );
+    const data = user.services.map(() => Math.floor(Math.random() * 100));
 
     return {
       labels,
