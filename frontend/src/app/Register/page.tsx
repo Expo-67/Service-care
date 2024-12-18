@@ -22,14 +22,17 @@ const Page: React.FC = () => {
     setSuccess("");
 
     try {
-      const response = await fetch(`http://localhost:5000/api/auth/signup`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({ username, email, password }),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/signup`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ username, email, password }),
+        }
+      );
 
       if (response.status === 201) {
         setSuccess("Signup successful! Redirecting to login...");
