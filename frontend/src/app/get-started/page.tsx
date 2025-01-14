@@ -58,7 +58,7 @@ export default function GetStarted() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="type">Type of Brand</Label>
+              <Label htmlFor="type">Model of Car</Label>
               <Input
                 id="type"
                 name="type"
