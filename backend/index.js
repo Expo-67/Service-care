@@ -8,19 +8,8 @@ import logServiceRoutes from "./routes/logService.js";
 import retrieveServiceRoutes from "./routes/RetrieveService.js";
 import { router as reminderRoutes } from "./routes/Reminder.js";
 import { router as CarDetailsRouter } from "./routes/cardetail.js";
-import { Configuration, OpenAIApi } from "openai";
+import profilePicRoutes from "./routes/profile-pic.js";
 
-const openai = new OpenAIApi(
-  new Configuration({ apiKey: process.env.API_KEY })
-); //Create an instance of the OpenAIApi class
-openai
-  .createChatCompletion({
-    model: "gpt-3.5-turbo",
-    messages: [{ role: "user", content: "Hello CHatgpt" }],
-  })
-  .then((res) => {
-    console.log(res);
-  });
 dotenv.config(); //Load up env files
 const app = express();
 const corsOptions = { origin: "http://localhost:3000", credentials: true };
@@ -30,6 +19,7 @@ app.use(cors(corsOptions));
 app.use(express.json()); // parse incoming request
 app.use(cookieParser()); // parse incoming cookies
 
+app.use("/uploads", express.static("uploads")); // static folder for serving uploaded files
 //Routes
 
 app.use("/api/auth", authRoutes);
@@ -37,6 +27,7 @@ app.use("/api/service", logServiceRoutes);
 app.use("/api/service", retrieveServiceRoutes);
 app.use("/api", reminderRoutes);
 app.use("/api", CarDetailsRouter);
+app.use("/api/profile", profilePicRoutes);
 
 app.listen(PORT, () => {
   connectDB().catch(() => {

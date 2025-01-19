@@ -1,34 +1,26 @@
 import { model, Schema } from "mongoose";
-
-const userSchema = new Schema(
+//profile picture model
+const profileSchema = new Schema(
   {
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    password: {
-      type: String,
-      required: true,
-    },
     name: {
       type: String,
       required: true,
     },
-    lastLogin: {
-      type: Date,
-      default: Date.now,
+    email: {
+      type: String,
+      required: true,
     },
-    isVerified: {
-      type: Boolean,
-      default: false,
+    profilePicture: {
+      type: String, // URL or file path of the profile picture
+      validate: {
+        validator: function (v) {
+          return /\.(jpg|jpeg|png)$/i.test(v); // Regex to validate .jpg or .png
+        },
+        message: (props) => `${props.value} is not a valid image format!`,
+      },
     },
-    resetPasswordToken: String,
-    resetPasswordExpiresAt: Date,
-    verificationToken: String,
-    verificationTokenExpiresAt: Date,
   },
   { timestamps: true }
 );
-
-export const User = model("User", userSchema);
+const profile = model("Profile", profileSchema);
+export default profile;
