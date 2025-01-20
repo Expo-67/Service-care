@@ -27,10 +27,6 @@ const carDetailsSchema = new Schema(
       type: Number,
       required: true,
     },
-    FuelType: {
-      type: "String",
-      required: true,
-    },
     carIntake: {
       type: carIntake,
       default: () => ({}),

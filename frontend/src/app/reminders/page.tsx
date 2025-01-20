@@ -40,6 +40,10 @@ export default function Reminders() {
     }
   };
 
+  const deleteReminder = (id: number) => {
+    setReminders(reminders.filter((reminder) => reminder.id !== id));
+  };
+
   return (
     <DashboardLayout>
       <div className="bg-white shadow-lg rounded-lg p-6">
@@ -76,6 +80,7 @@ export default function Reminders() {
               <TableRow>
                 <TableHead>Service</TableHead>
                 <TableHead>Date</TableHead>
+                <TableHead>Action</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -83,6 +88,14 @@ export default function Reminders() {
                 <TableRow key={reminder.id}>
                   <TableCell>{reminder.service}</TableCell>
                   <TableCell>{reminder.date}</TableCell>
+                  <TableCell>
+                    <Button
+                      variant="destructive"
+                      onClick={() => deleteReminder(reminder.id)}
+                    >
+                      Delete
+                    </Button>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

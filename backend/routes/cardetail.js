@@ -33,7 +33,7 @@ router.post("/cardetails", async (req, res) => {
     !ModelofCar ||
     !YearofMan ||
     !EngineCapacity ||
-    !FuelType
+    !carIntake
   ) {
     return res
       .status(400)
@@ -47,7 +47,6 @@ router.post("/cardetails", async (req, res) => {
       ModelofCar,
       YearofMan,
       EngineCapacity,
-      FuelType,
       carIntake, // Optional; can be passed or left as default (empty object)
     });
 

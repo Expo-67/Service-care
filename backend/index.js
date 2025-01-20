@@ -12,7 +12,10 @@ import profilePicRoutes from "./routes/profile-pic.js";
 
 dotenv.config(); //Load up env files
 const app = express();
-const corsOptions = { origin: "http://localhost:3000", credentials: true };
+const corsOptions = {
+  origin: "http://localhost:3000", //the frontend url
+  credentials: true,
+};
 const PORT = process.env.PORT || 5005;
 
 app.use(cors(corsOptions));

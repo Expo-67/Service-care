@@ -1,22 +1,21 @@
+// middleware/verifyToken.js
+
 import jwt from "jsonwebtoken";
 
-export const verifyToken = (req, res, next) => {
-  const token = req.cookies.token;
-  if (!token)
-    return res
-      .status(401)
-      .json({ success: false, message: "Unauthorized - no token povided" });
+const verifyToken = (req, res, next) => {
+  const token = req.cookies.token || req.headers["authorization"];
+
+  if (!token) {
+    return res.status(401).json({ message: "No token, authorization denied" });
+  }
+
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-    if (!decoded)
-      return res
-        .status(401)
-        .json({ success: false, message: "Unauthorized - no token povided" });
-    req.userId = decoded.userId;
+    req.user = decoded;
     next();
   } catch (error) {
-    console.log("Error in verifyToken", error);
-    return res.status(500).json({ success: false, message: "Server error" });
+    return res.status(401).json({ message: "Invalid token" });
   }
 };
+
+export default verifyToken;

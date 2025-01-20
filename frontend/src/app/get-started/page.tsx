@@ -68,28 +68,28 @@ export default function GetStarted() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="engineCapacity">Engine Capacity</Label>
+              <Label htmlFor="YearofMan">Year of Man</Label>
               <Input
-                id="engineCapacity"
-                name="engineCapacity"
+                id="YearofMan"
+                name="YearofMan"
                 value={formData.engineCapacity}
                 onChange={handleChange}
                 required
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="year">Year of Manufacture</Label>
+              <Label htmlFor="EngineCapacity">EngineCapacity</Label>
               <Input
-                id="year"
-                name="year"
-                type="number"
+                id="EngineCapacity"
+                name="EngineCapacity"
+                type="string"
                 value={formData.year}
                 onChange={handleChange}
                 required
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="fuel">Fuel</Label>
+              <Label htmlFor="fuel">CarIntake</Label>
               <Select
                 onValueChange={(value) => handleSelectChange("fuel", value)}
               >
@@ -101,6 +101,8 @@ export default function GetStarted() {
                   <SelectItem value="diesel">Diesel</SelectItem>
                   <SelectItem value="electric">Electric</SelectItem>
                   <SelectItem value="hybrid">Hybrid</SelectItem>
+                  <SelectItem value="lpg">lpg</SelectItem>
+                  <SelectItem value="cng">cng</SelectItem>
                 </SelectContent>
               </Select>
             </div>
