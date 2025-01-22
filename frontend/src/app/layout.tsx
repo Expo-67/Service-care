@@ -14,7 +14,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Car Service Dashboard",
+  title: "Service-moti",
   description: "Manage your car Service maintenance",
 };
 

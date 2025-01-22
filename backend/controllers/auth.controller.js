@@ -44,11 +44,16 @@ export const login = async (req, res) => {
     return res.status(400).json({ message: "Invalid credentials" });
   }
 
+  // Now you can generate the token with the method defined in the schema
+  const token = user.generateAuthToken();
+
   generateTokenAndSetCookie(user, res);
 
   return res.status(200).json({
     message: "Login successful",
-    user: { name: user.name, email: user.email },
+    token: token, //token generated and sent
+    userName: user.name, //send user's name
+    userEmail: user.email, //send user's email
   });
 };
 

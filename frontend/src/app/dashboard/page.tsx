@@ -1,11 +1,22 @@
+"use client";
 import Link from "next/link";
 import DashboardLayout from "../dashboard-layout/page";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useRouter } from "next/navigation";
 
 export default function Dashboard() {
-  // Mock data for the next service
+  const router = useRouter();
+
+  const userName = localStorage.getItem("userName") || "User";
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    router.push("/login");
+  }
+
+  // samples of data for next service
   const nextServiceDate = new Date("2024-03-15");
   const today = new Date();
   const lastServiceDate = new Date("2023-09-15");
@@ -25,13 +36,10 @@ export default function Dashboard() {
         <Card>
           <CardHeader>
             <CardTitle className="text-2xl font-bold">
-              Welcome to Your Dashboard
+              Hi, {userName ? userName : "User"}👋! Welcome to Your Dashboard
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-gray-600 mb-4">
-              Manage your car service and maintenance from here.
-            </p>
             <div className="space-x-4">
               <Button asChild>
                 <Link href="/get-started">Get Started</Link>

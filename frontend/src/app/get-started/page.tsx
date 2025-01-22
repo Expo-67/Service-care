@@ -16,11 +16,11 @@ import {
 
 export default function GetStarted() {
   const [formData, setFormData] = useState({
-    brand: "",
-    type: "",
-    engineCapacity: "",
-    year: "",
-    fuel: "",
+    BrandofCar: "",
+    ModelofCar: "",
+    YearOfMan: "",
+    EngineCapacity: "",
+    carIntake: "petrol",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,65 +47,81 @@ export default function GetStarted() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Brand Input */}
             <div className="space-y-2">
               <Label htmlFor="brand">Brand of Car</Label>
               <Input
                 id="brand"
                 name="brand"
-                value={formData.brand}
+                value={formData.BrandofCar}
                 onChange={handleChange}
                 required
               />
             </div>
+
+            {/* Model Input */}
             <div className="space-y-2">
-              <Label htmlFor="type">Model of Car</Label>
+              <Label htmlFor="model">Model of Car</Label>
               <Input
-                id="type"
-                name="type"
-                value={formData.type}
+                id="model"
+                name="model"
+                value={formData.ModelofCar}
                 onChange={handleChange}
                 required
               />
             </div>
+
+            {/* Year of Manufacture Input */}
             <div className="space-y-2">
-              <Label htmlFor="YearofMan">Year of Man</Label>
+              <Label htmlFor="yearOfManufacture">Year of Manufacture</Label>
               <Input
-                id="YearofMan"
-                name="YearofMan"
-                value={formData.engineCapacity}
+                id="yearOfManufacture"
+                name="yearOfManufacture"
+                type="number"
+                value={formData.YearOfMan}
                 onChange={handleChange}
                 required
               />
             </div>
+
+            {/* Engine Capacity Input */}
             <div className="space-y-2">
-              <Label htmlFor="EngineCapacity">EngineCapacity</Label>
+              <Label htmlFor="engineCapacity">Engine Capacity</Label>
               <Input
-                id="EngineCapacity"
-                name="EngineCapacity"
-                type="string"
-                value={formData.year}
+                id="engineCapacity"
+                name="engineCapacity"
+                type="number"
+                value={formData.EngineCapacity}
                 onChange={handleChange}
                 required
               />
             </div>
+
+            {/* Fuel Type Select */}
             <div className="space-y-2">
-              <Label htmlFor="fuel">CarIntake</Label>
+              <Label htmlFor="fuel">Car Intake</Label>
               <Select
-                onValueChange={(value) => handleSelectChange("fuel", value)}
+                data-id="fuel"
+                value={formData.carIntake}
+                onValueChange={(value) =>
+                  handleSelectChange("carIntake", value)
+                }
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select fuel type" />
+                  <SelectValue placeholder="Select car intake type" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="petrol">Petrol</SelectItem>
                   <SelectItem value="diesel">Diesel</SelectItem>
                   <SelectItem value="electric">Electric</SelectItem>
                   <SelectItem value="hybrid">Hybrid</SelectItem>
-                  <SelectItem value="lpg">lpg</SelectItem>
-                  <SelectItem value="cng">cng</SelectItem>
+                  <SelectItem value="lpg">LPG</SelectItem>
+                  <SelectItem value="cng">CNG</SelectItem>
                 </SelectContent>
               </Select>
             </div>
+
+            {/* Submit Button */}
             <Button type="submit" className="w-full">
               Submit
             </Button>

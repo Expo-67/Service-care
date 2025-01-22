@@ -1,9 +1,5 @@
 import express from "express";
-import Service from "../models/service.model.js";
-
 const router = express.Router();
-
-//POST log a new service
 router.post("/log", async (req, res) => {
   try {
     const {
@@ -14,7 +10,8 @@ router.post("/log", async (req, res) => {
       nextServiceMileage,
       serviceItems,
     } = req.body;
-    //Validation
+
+    //Validation: Ensure that all required fields are filled
     if (
       !date ||
       !mileage ||
@@ -25,7 +22,7 @@ router.post("/log", async (req, res) => {
       return res.status(400).json({ message: "Please fill in all fields" });
     }
 
-    //the service record
+    // Create the service record
     const service = new Service({
       date,
       mileage,
@@ -35,7 +32,7 @@ router.post("/log", async (req, res) => {
       serviceItems,
     });
 
-    //save the service record to database
+    // Save the service record to the database
     await service.save();
     res.status(201).json({ message: "Service logged successfully", service });
   } catch (error) {
@@ -44,4 +41,5 @@ router.post("/log", async (req, res) => {
   }
 });
 
+//export log service router
 export default router;

@@ -2,6 +2,7 @@
 
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 // User Schema
 const userSchema = new mongoose.Schema({
@@ -20,6 +21,13 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
 });
+// Method to generate auth token
+userSchema.methods.generateAuthToken = function () {
+  const token = jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
+    expiresIn: "7d", // Adjust expiration as needed
+  });
+  return token;
+};
 
 // Password hashing middleware
 userSchema.pre("save", async function (next) {

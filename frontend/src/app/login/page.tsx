@@ -15,37 +15,40 @@ const Page = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    setError("");
+    setError(""); // Clear any existing error message
 
     try {
+      // Perform the POST request to the backend login route
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/login`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/login`, // Backend login URL
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          credentials: "include",
-          body: JSON.stringify({ email, password }),
+          credentials: "include", // Include cookies (for session management)
+          body: JSON.stringify({ email, password }), // Send the email and password
         }
       );
 
       if (response.ok) {
+        // On successful login, store the token and redirect to the dashboard
         const data = await response.json();
         console.log("Login successful:", data);
-        // Store the token in localStorage or a secure cookie
-        localStorage.setItem("token", data.token);
-        // Redirect to dashboard
-        router.push("/dashboard");
+        localStorage.setItem("token", data.token); // Store token in localStorage
+        localStorage.setItem("userName", data.userName); // Store users name in localStorage
+
+        router.push("/dashboard"); // Redirect to dashboard after successful login
       } else {
+        // If there's an error, show error message
         const errorData = await response.json();
-        setError(errorData.error || "Invalid email or password");
+        setError(errorData.error || "Invalid email or password.");
       }
     } catch (err) {
       console.error("Login error:", err);
       setError("An error occurred. Please try again.");
     } finally {
-      setIsLoading(false);
+      setIsLoading(false); //  spinner stops loading
     }
   };
 
@@ -89,7 +92,6 @@ const Page = () => {
                   required
                 />
               </div>
-
               <div>
                 <label
                   htmlFor="password"
@@ -107,7 +109,8 @@ const Page = () => {
                   required
                 />
               </div>
-              {error && <p className="text-red-500">{error}</p>}
+              {error && <p className="text-red-500">{error}</p>}{" "}
+              {/* Display error message if any */}
               <button
                 className="bg-gradient-to-r from-gray-500 to-gray-700 shadow-lg mt-6 p-2 text-white rounded-lg w-full hover:scale-105 hover:from-gray-500 hover:to-gray-700 transition duration-300 ease-in-out disabled:opacity-50"
                 type="submit"

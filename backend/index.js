@@ -18,7 +18,14 @@ const corsOptions = {
 };
 const PORT = process.env.PORT || 5005;
 
-app.use(cors(corsOptions));
+//enable cors for all routes
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
 app.use(express.json()); // parse incoming request
 app.use(cookieParser()); // parse incoming cookies
 

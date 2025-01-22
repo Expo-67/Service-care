@@ -68,7 +68,7 @@ export default function LogService() {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/services/log`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/service/log`,
         {
           method: "POST",
           headers: {
