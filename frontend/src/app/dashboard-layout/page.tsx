@@ -1,10 +1,8 @@
 "use client";
 
-//import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import SettingsIcon from "@mui/icons-material/Settings";
 import DescriptionIcon from "@mui/icons-material/Description";
@@ -48,12 +46,11 @@ export default function DashboardLayout({
             </div>
             <div className="flex items-center">
               <div className="flex items-center space-x-4">
-                <Button variant="outline" size="sm">
-                  Click me
-                </Button>
+                {/* Removed "Click me" button */}
+                {/* User profile image */}
                 <Image
                   className="h-8 w-8 rounded-full"
-                  src="/placeholder.svg?height=32&width=32"
+                  src="" // Replace with user's profile image URL
                   alt="User Avatar"
                   width={32}
                   height={32}

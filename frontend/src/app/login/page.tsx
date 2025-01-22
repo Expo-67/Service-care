@@ -1,46 +1,56 @@
 "use client";
 
-import React, { useState } from "react";
-import Image from "next/image";
+import type React from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import gti from "../assets/gti.jpeg";
-
-const Page = () => {
+import Link from "next/link";
+import { Eye, EyeOff } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import Image from "next/image";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
+import brand2 from "../assets/brand2.png";
+const LoginPage = () => {
   const router = useRouter();
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [error, setError] = useState<string>("");
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    setError(""); // Clear any existing error message
+    setError("");
 
     try {
-      // Perform the POST request to the backend login route
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/login`, // Backend login URL
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/login`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          credentials: "include", // Include cookies (for session management)
-          body: JSON.stringify({ email, password }), // Send the email and password
+          credentials: "include",
+          body: JSON.stringify({ email, password }),
         }
       );
 
       if (response.ok) {
-        // On successful login, store the token and redirect to the dashboard
         const data = await response.json();
         console.log("Login successful:", data);
-        localStorage.setItem("token", data.token); // Store token in localStorage
-        localStorage.setItem("userName", data.userName); // Store users name in localStorage
-
-        router.push("/dashboard"); // Redirect to dashboard after successful login
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("userName", data.userName);
+        router.push("/dashboard");
       } else {
-        // If there's an error, show error message
         const errorData = await response.json();
         setError(errorData.error || "Invalid email or password.");
       }
@@ -48,82 +58,82 @@ const Page = () => {
       console.error("Login error:", err);
       setError("An error occurred. Please try again.");
     } finally {
-      setIsLoading(false); //  spinner stops loading
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="flex font-poppins items-center justify-center dark:bg-gray-900 min-w-screen min-h-screen">
-      <div className="grid gap-8">
-        <div
-          id="back-div"
-          className="bg-gradient-to-r from-red-900 to-gray-200 rounded-[26px] m-4"
-        >
-          <div className="border-[20px] border-transparent rounded-[20px] dark:bg-gray-900 bg-white shadow-lg xl:p-10 2xl:p-10 lg:p-10 md:p-10 sm:p-2 m-2">
-            <h1 className="pt-4 pb-4 font-bold text-3xl dark:text-gray-400 text-center cursor-default flex items-center justify-center space-x-3">
-              <span>Service-moti</span>
-              <Image
-                className="h-8 w-8 rounded-full"
-                src={gti}
-                alt="gti"
-                width={42}
-                height={42}
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-white/90 to-gray-800 p-4">
+      <Card className="w-full max-w-md">
+        <CardHeader className="space-y-1">
+          <div className="flex items-center justify-center space-x-2">
+            <CardTitle className="text-2xl font-bold">Service-moti</CardTitle>
+            <Image
+              src={brand2}
+              alt="Service-moti logo"
+              width={72}
+              height={62}
+              className="rounded-full"
+            />
+          </div>
+          <CardDescription>Enter your login details👤!</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="john@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
               />
-            </h1>
-
-            <span className="pt-2 pb-2 font-bold text-2xl dark:text-gray-400 text-center cursor-default">
-              Log-in
-            </span>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label
-                  htmlFor="email"
-                  className="mb-2 dark:text-gray-400 text-lg"
-                >
-                  Email
-                </label>
-                <input
-                  id="email"
-                  className="border dark:bg-white/90 dark:text-gray-300 dark:border-gray-700 p-3 shadow-md placeholder:text-base border-gray-300 rounded-lg w-full focus:scale-105 ease-in-out duration-300"
-                  type="email"
-                  placeholder="john@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="password"
-                  className="mb-2 dark:text-gray-400 text-lg"
-                >
-                  Password
-                </label>
-                <input
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
+              <div className="relative">
+                <Input
                   id="password"
-                  className="border dark:bg-white/90 dark:text-gray-300 dark:border-gray-700 p-3 mb-2 shadow-md placeholder:text-base border-gray-300 rounded-lg w-full focus:scale-105 ease-in-out duration-300"
-                  type="password"
-                  placeholder="Password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter your password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-500"
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-5 w-5" />
+                  ) : (
+                    <Eye className="h-5 w-5" />
+                  )}
+                </button>
               </div>
-              {error && <p className="text-red-500">{error}</p>}{" "}
-              {/* Display error message if any */}
-              <button
-                className="bg-gradient-to-r from-gray-500 to-gray-700 shadow-lg mt-6 p-2 text-white rounded-lg w-full hover:scale-105 hover:from-gray-500 hover:to-gray-700 transition duration-300 ease-in-out disabled:opacity-50"
-                type="submit"
-                disabled={isLoading}
-              >
-                {isLoading ? "Logging in..." : "Login"}
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
+            </div>
+            {error && (
+              <p className="text-sm text-red-500 dark:text-red-400">{error}</p>
+            )}
+            <Button className="w-full" type="submit" disabled={isLoading}>
+              {isLoading ? "Logging in..." : "Log in"}
+            </Button>
+          </form>
+        </CardContent>
+        <CardFooter className="flex flex-col space-y-2">
+          <p className="text-sm text-center">
+            Don't have an account?{" "}
+            <a href="/Register" className="text-blue-500 hover:underline">
+              Sign up
+            </a>
+          </p>
+        </CardFooter>
+      </Card>
     </div>
   );
 };
 
-export default Page;
+export default LoginPage;

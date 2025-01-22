@@ -1,50 +1,53 @@
 "use client";
+
 import Image from "next/image";
-//import Link from "next/link";
-import gti from "../assets/gti.jpeg";
 import { useState } from "react";
+import { Menu, X } from "lucide-react";
+import brand2 from "../assets/brand2.png";
 
 const Navbar = () => {
-  // State to track whether the mobile menu is open
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // Toggle mobile menu visibility
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
   return (
-    <div>
-      <nav className="bg-gray-800">
-        <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-          <div className="relative flex h-16 items-center justify-between">
-            {/* Logo and Header */}
-            <div className="flex items-center">
-              <Image className="h-8 w-auto" src={gti} alt="gti" />
-            </div>
+    <nav className="bg-gray-800 text-white">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex h-16 items-center justify-between">
+          <div className="flex items-center">
+            <Image
+              src={brand2}
+              alt="Service-moti logo"
+              width={72}
+              height={52}
+              className="rounded-full"
+            />
+            <span className="ml-2 text-s font-bold">Service-moti</span>
+          </div>
 
-            {/* Centered Home Link */}
-            <div className="absolute left-1/2 transform -translate-x-1/2">
-              <div className="flex space-x-4 content-center justify-center">
-                <a
-                  href="#"
-                  className="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white"
-                  aria-current="page"
-                >
-                  Home
-                </a>
-              </div>
-            </div>
+          <div className="hidden md:block">
+            <div className="ml-10 flex items-baseline space-x-4">
+              <a
+                href="/"
+                className="rounded-md px-3 py-2 text-sm font-medium hover:bg-gray-800 hover:text-white"
+              >
+                Home
+              </a>
+              <a
+                href="#services"
+                className="rounded-md px-3 py-2 text-sm font-medium hover:bg-gray-700 hover:text-white"
+              >
+                Services
+              </a>
 
-            {/* Right-side Links (Sign-up, Log-in) */}
-            <div className="hidden sm:flex space-x-4 content-center">
               <a
                 href="./Register"
                 className="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white"
               >
                 Sign-up
               </a>
-
               <a
                 href="./login"
                 className="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white"
@@ -52,81 +55,58 @@ const Navbar = () => {
                 Log-in
               </a>
             </div>
+          </div>
 
-            {/* Mobile Menu Button (Hamburger) */}
-            <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-              <button
-                type="button"
-                className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-                aria-controls="mobile-menu"
-                aria-expanded={isMenuOpen ? "true" : "false"}
-                onClick={toggleMenu}
-              >
-                <span className="sr-only">Open main menu</span>
-                {/* Hamburger icon (when menu is closed) */}
-                <svg
-                  className={`${isMenuOpen ? "hidden" : "block"} block size-6`}
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-                  />
-                </svg>
-                {/* Close icon (when menu is open) */}
-                <svg
-                  className={`${isMenuOpen ? "block" : "hidden"} size-6`}
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M6 18 18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-            </div>
+          <div className="md:hidden">
+            <button
+              type="button"
+              className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+              aria-controls="mobile-menu"
+              aria-expanded={isMenuOpen}
+              onClick={toggleMenu}
+            >
+              <span className="sr-only">Open main menu</span>
+              {isMenuOpen ? (
+                <X className="block h-6 w-6" aria-hidden="true" />
+              ) : (
+                <Menu className="block h-6 w-6" aria-hidden="true" />
+              )}
+            </button>
           </div>
         </div>
+      </div>
 
-        {/* Mobile Menu */}
-        <div
-          className={`sm:hidden ${isMenuOpen ? "block" : "hidden"}`}
-          id="mobile-menu"
-        >
-          <div className="space-y-1 px-2 pb-3 pt-2">
+      {isMenuOpen && (
+        <div className="md:hidden" id="mobile-menu">
+          <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
             <a
-              href="#"
-              className="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white"
-              aria-current="page"
+              href="/"
+              className="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-700 hover:text-white"
             >
               Home
             </a>
             <a
-              href="#"
-              className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+              href="#services"
+              className="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-700 hover:text-white"
+            >
+              Services
+            </a>
+            <a
+              href="/register"
+              className="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-700 hover:text-white"
             >
               Sign-up
             </a>
             <a
-              href="#"
-              className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+              href="/login"
+              className="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-700 hover:text-white bg-red-800"
             >
               Log-in
             </a>
           </div>
         </div>
-      </nav>
-    </div>
+      )}
+    </nav>
   );
 };
 
