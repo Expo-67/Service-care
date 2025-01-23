@@ -18,14 +18,8 @@ router.get("/cardetails", async (req, res) => {
 // Route to add new car details
 router.post("/cardetails", async (req, res) => {
   // Destructure car details from the request body
-  const {
-    BrandofCar,
-    ModelofCar,
-    YearofMan,
-    EngineCapacity,
-    FuelType,
-    carIntake,
-  } = req.body;
+  const { BrandofCar, ModelofCar, YearofMan, EngineCapacity, carIntake } =
+    req.body;
 
   // Validation for required fields
   if (

@@ -20,21 +20,65 @@ export default function GetStarted() {
     ModelofCar: "",
     YearOfMan: "",
     EngineCapacity: "",
-    carIntake: "petrol",
+    carIntake: {
+      petrol: false,
+      diesel: false,
+      electric: false,
+      hybrid: false,
+      lpg: false,
+      cng: false,
+    },
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSelectChange = (name: string, value: string) => {
-    setFormData({ ...formData, [name]: value });
+  const handleSelectChange = (value: string) => {
+    setFormData({
+      ...formData,
+      carIntake: {
+        petrol: false,
+        diesel: false,
+        electric: false,
+        hybrid: false,
+        lpg: false,
+        cng: false,
+        [value]: true,
+      },
+    });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    // Here you would typically send the data to your backend
+    setIsLoading(true);
+
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/cardetails`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to submit car details");
+      }
+
+      const data = await response.json();
+      console.log("Success:", data);
+      // Handle success (e.g., reset form or redirect user)
+    } catch (error) {
+      console.error("Error:", error);
+      // Handle error (e.g., show error message to user)
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -49,10 +93,10 @@ export default function GetStarted() {
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Brand Input */}
             <div className="space-y-2">
-              <Label htmlFor="brand">Brand of Car</Label>
+              <Label htmlFor="BrandofCar">Brand of Car</Label>
               <Input
-                id="brand"
-                name="brand"
+                id="BrandofCar"
+                name="BrandofCar"
                 value={formData.BrandofCar}
                 onChange={handleChange}
                 required
@@ -61,10 +105,10 @@ export default function GetStarted() {
 
             {/* Model Input */}
             <div className="space-y-2">
-              <Label htmlFor="model">Model of Car</Label>
+              <Label htmlFor="ModelofCar">Model of Car</Label>
               <Input
-                id="model"
-                name="model"
+                id="ModelofCar"
+                name="ModelofCar"
                 value={formData.ModelofCar}
                 onChange={handleChange}
                 required
@@ -73,10 +117,10 @@ export default function GetStarted() {
 
             {/* Year of Manufacture Input */}
             <div className="space-y-2">
-              <Label htmlFor="yearOfManufacture">Year of Manufacture</Label>
+              <Label htmlFor="YearOfMan">Year of Manufacture</Label>
               <Input
-                id="yearOfManufacture"
-                name="yearOfManufacture"
+                id="YearOfMan"
+                name="YearOfMan"
                 type="number"
                 value={formData.YearOfMan}
                 onChange={handleChange}
@@ -86,10 +130,10 @@ export default function GetStarted() {
 
             {/* Engine Capacity Input */}
             <div className="space-y-2">
-              <Label htmlFor="engineCapacity">Engine Capacity</Label>
+              <Label htmlFor="EngineCapacity">Engine Capacity</Label>
               <Input
-                id="engineCapacity"
-                name="engineCapacity"
+                id="EngineCapacity"
+                name="EngineCapacity"
                 type="number"
                 value={formData.EngineCapacity}
                 onChange={handleChange}
@@ -99,12 +143,14 @@ export default function GetStarted() {
 
             {/* Fuel Type Select */}
             <div className="space-y-2">
-              <Label htmlFor="fuel">Car Intake</Label>
+              <Label htmlFor="carIntake">Car Intake</Label>
               <Select
-                data-id="fuel"
-                value={formData.carIntake}
-                onValueChange={(value) =>
-                  handleSelectChange("carIntake", value)
+                onValueChange={handleSelectChange}
+                value={
+                  Object.keys(formData.carIntake).find(
+                    (key) =>
+                      formData.carIntake[key as keyof typeof formData.carIntake]
+                  ) || ""
                 }
               >
                 <SelectTrigger>
@@ -122,8 +168,8 @@ export default function GetStarted() {
             </div>
 
             {/* Submit Button */}
-            <Button type="submit" className="w-full">
-              Submit
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? "Submitting..." : "Submit"}
             </Button>
           </form>
         </CardContent>
