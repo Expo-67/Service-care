@@ -1,6 +1,6 @@
 "use client";
-
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import DashboardLayout from "../dashboard-layout/page";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,67 +15,95 @@ import {
 } from "@/components/ui/select";
 
 export default function GetStarted() {
-  const [formData, setFormData] = useState({
+  const router = useRouter();
+
+  // Separate state for general car details
+  const [carDetails, setCarDetails] = useState({
     BrandofCar: "",
     ModelofCar: "",
-    YearOfMan: "",
+    YearofMan: "",
     EngineCapacity: "",
-    carIntake: {
+  });
+
+  // Separate state for car intake (fuel type)
+  const [carIntake, setCarIntake] = useState({
+    petrol: false,
+    diesel: false,
+    electric: false,
+    hybrid: false,
+    lpg: false,
+    cng: false,
+  });
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  // Handle general input field changes
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type } = e.target;
+    const newValue = type === "number" ? Number.parseFloat(value) : value;
+    setCarDetails({ ...carDetails, [name]: newValue });
+  };
+
+  // Handle fuel type selection change
+  const handleSelectChange = (value: string) => {
+    setCarIntake({
       petrol: false,
       diesel: false,
       electric: false,
       hybrid: false,
       lpg: false,
       cng: false,
-    },
-  });
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSelectChange = (value: string) => {
-    setFormData({
-      ...formData,
-      carIntake: {
-        petrol: false,
-        diesel: false,
-        electric: false,
-        hybrid: false,
-        lpg: false,
-        cng: false,
-        [value]: true,
-      },
+      [value]: true,
     });
   };
 
+  // Handle form submission with validation
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Validate form fields
+    const { BrandofCar, ModelofCar, YearofMan, EngineCapacity } = carDetails;
+    if (!BrandofCar || !ModelofCar || !YearofMan || !EngineCapacity) {
+      setError("Please fill all required fields.");
+      return;
+    }
+
+    // Check if a car intake type is selected
+    const selectedIntake = Object.values(carIntake).includes(true);
+    if (!selectedIntake) {
+      setError("Please select a car intake (fuel type).");
+      return;
+    }
+
+    // Clear any previous error and show loading state
+    setError("");
     setIsLoading(true);
 
     try {
+      // Submit form data via API request
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/cardetails`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/cardetails`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify({ ...carDetails, carIntake }),
         }
       );
 
-      if (!response.ok) {
-        throw new Error("Failed to submit car details");
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Car details registered successfully", data);
+        router.push("/profile"); // Redirect to profile page after successful submission
+      } else {
+        const errorData = await response.json();
+        setError(errorData.message || "Error during car details registration.");
       }
-
-      const data = await response.json();
-      console.log("Success:", data);
-      // Handle success (e.g., reset form or redirect user)
     } catch (error) {
       console.error("Error:", error);
-      // Handle error (e.g., show error message to user)
+      setError("Failed to submit car details. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -91,13 +119,15 @@ export default function GetStarted() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
+            {error && <div className="text-red-500 text-sm">{error}</div>}
+
             {/* Brand Input */}
             <div className="space-y-2">
               <Label htmlFor="BrandofCar">Brand of Car</Label>
               <Input
                 id="BrandofCar"
                 name="BrandofCar"
-                value={formData.BrandofCar}
+                value={carDetails.BrandofCar}
                 onChange={handleChange}
                 required
               />
@@ -109,7 +139,7 @@ export default function GetStarted() {
               <Input
                 id="ModelofCar"
                 name="ModelofCar"
-                value={formData.ModelofCar}
+                value={carDetails.ModelofCar}
                 onChange={handleChange}
                 required
               />
@@ -117,12 +147,12 @@ export default function GetStarted() {
 
             {/* Year of Manufacture Input */}
             <div className="space-y-2">
-              <Label htmlFor="YearOfMan">Year of Manufacture</Label>
+              <Label htmlFor="YearofMan">Year of Manufacture</Label>
               <Input
-                id="YearOfMan"
-                name="YearOfMan"
+                id="YearofMan"
+                name="YearofMan"
                 type="number"
-                value={formData.YearOfMan}
+                value={carDetails.YearofMan}
                 onChange={handleChange}
                 required
               />
@@ -135,7 +165,7 @@ export default function GetStarted() {
                 id="EngineCapacity"
                 name="EngineCapacity"
                 type="number"
-                value={formData.EngineCapacity}
+                value={carDetails.EngineCapacity}
                 onChange={handleChange}
                 required
               />
@@ -147,10 +177,9 @@ export default function GetStarted() {
               <Select
                 onValueChange={handleSelectChange}
                 value={
-                  Object.keys(formData.carIntake).find(
-                    (key) =>
-                      formData.carIntake[key as keyof typeof formData.carIntake]
-                  ) || ""
+                  Object.keys(carIntake).find(
+                    (key) => carIntake[key as keyof typeof carIntake]
+                  ) || undefined
                 }
               >
                 <SelectTrigger>

@@ -32,7 +32,7 @@ const initialServiceItems: ServiceItems = {
 export default function LogService() {
   const router = useRouter();
   const [formData, setFormData] = useState({
-    serviceDate: "",
+    date: "",
     mileage: "",
     garageName: "",
     mechanicName: "",
@@ -130,12 +130,12 @@ export default function LogService() {
           )}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="serviceDate">Service Date</Label>
+              <Label htmlFor="date">Service Date</Label>
               <Input
-                id="serviceDate"
-                name="serviceDate"
+                id="date"
+                name="date"
                 type="date"
-                value={formData.serviceDate}
+                value={formData.date}
                 onChange={handleChange}
                 required
               />

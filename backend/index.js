@@ -7,9 +7,8 @@ import authRoutes from "./routes/auth.route.js";
 import logServiceRoutes from "./routes/logService.js";
 import retrieveServiceRoutes from "./routes/RetrieveService.js";
 import { router as reminderRoutes } from "./routes/Reminder.js";
-import { router as CarDetailsRouter } from "./routes/cardetail.js";
+import CarDetailsRoutes from "./routes/cardetail.js";
 import profilePicRoutes from "./routes/profile-pic.js";
-
 dotenv.config(); //Load up env files
 const app = express();
 const corsOptions = {
@@ -36,8 +35,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/service", logServiceRoutes);
 app.use("/api/service", retrieveServiceRoutes);
 app.use("/api", reminderRoutes);
-app.use("/api", CarDetailsRouter);
 app.use("/api/profile", profilePicRoutes);
+app.use("/api", CarDetailsRoutes);
 
 app.listen(PORT, () => {
   connectDB().catch(() => {
