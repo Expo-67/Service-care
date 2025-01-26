@@ -96,7 +96,7 @@ export default function GetStarted() {
       if (response.ok) {
         const data = await response.json();
         console.log("Car details registered successfully", data);
-        router.push("/profile"); // Redirect to profile page after successful submission
+        router.push("/dashboard"); // Redirect to dashboard page after successful submission
       } else {
         const errorData = await response.json();
         setError(errorData.message || "Error during car details registration.");

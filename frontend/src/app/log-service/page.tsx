@@ -8,22 +8,36 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
+import { toast, Toaster } from "react-hot-toast";
 
-// Define a type for service items
-type ServiceItem = {
-  checked: boolean;
-  changed: boolean;
-};
+// Service Items type definition
+type ServiceItemKey =
+  | "engineOil"
+  | "oilFilter"
+  | "airCleanerFilter"
+  | "FrontDifferentialOil"
+  | "RearDifferentialOil"
+  | "TransmissionOil"
+  | "TransferOil"
+  | "fuelorDieselFilter"
+  | "Greasing"
+  | "PowerSteeringFluid"
+  | "sparkPlugs"
+  | "brakePads"
+  | "brakeFluid";
 
-type ServiceItems = {
-  [key: string]: ServiceItem;
-};
-
-const initialServiceItems: ServiceItems = {
+// Initial state for service items
+const initialServiceItemsState = {
   engineOil: { checked: false, changed: false },
   oilFilter: { checked: false, changed: false },
-  airFilter: { checked: false, changed: false },
-  fuelFilter: { checked: false, changed: false },
+  airCleanerFilter: { checked: false, changed: false },
+  FrontDifferentialOil: { checked: false, changed: false },
+  RearDifferentialOil: { checked: false, changed: false },
+  TransmissionOil: { checked: false, changed: false },
+  TransferOil: { checked: false, changed: false },
+  fuelorDieselFilter: { checked: false, changed: false },
+  Greasing: { checked: false, changed: false },
+  PowerSteeringFluid: { checked: false, changed: false },
   sparkPlugs: { checked: false, changed: false },
   brakePads: { checked: false, changed: false },
   brakeFluid: { checked: false, changed: false },
@@ -31,36 +45,41 @@ const initialServiceItems: ServiceItems = {
 
 export default function LogService() {
   const router = useRouter();
-  const [formData, setFormData] = useState({
+
+  // State for service details
+  const [serviceDetails, setServiceDetails] = useState({
     date: "",
     mileage: "",
     garageName: "",
     mechanicName: "",
     nextServiceMileage: "",
-    serviceItems: initialServiceItems,
   });
+
+  // State for service items
+  const [serviceItems, setServiceItems] = useState(initialServiceItemsState);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState({ type: "", content: "" });
 
-  const handleItemChange = (
-    itemKey: keyof ServiceItems,
+  // Handle changes in service details
+  const handleDetailsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setServiceDetails((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // Handle changes in service items
+  const handleServiceItemChange = (
+    itemKey: ServiceItemKey,
     action: "checked" | "changed",
     value: boolean
   ) => {
-    setFormData((prev) => ({
+    setServiceItems((prev) => ({
       ...prev,
-      serviceItems: {
-        ...prev.serviceItems,
-        [itemKey]: { ...prev.serviceItems[itemKey], [action]: value },
-      },
+      [itemKey]: { ...prev[itemKey], [action]: value },
     }));
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
+  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -75,21 +94,14 @@ export default function LogService() {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify({ ...serviceDetails, serviceItems }),
         }
       );
 
-      let responseData;
-      const responseText = await response.text();
-      try {
-        responseData = JSON.parse(responseText);
-      } catch (parseError) {
-        console.error("Error parsing response:", parseError);
-        throw new Error(`Invalid response from server: ${responseText}`);
-      }
+      const responseData = await response.json();
 
       if (response.ok) {
-        setMessage({ type: "success", content: "Service logged successfully" });
+        toast.success("Service logged successfully!🛠️🎉");
         setTimeout(() => {
           router.push("/service-records");
         }, 2000);
@@ -97,7 +109,6 @@ export default function LogService() {
         throw new Error(responseData.message || "Failed to log service");
       }
     } catch (error) {
-      console.error("Error logging service:", error);
       setMessage({
         type: "error",
         content:
@@ -113,7 +124,7 @@ export default function LogService() {
       <Card className="max-w-2xl mx-auto">
         <CardHeader>
           <CardTitle className="text-3xl font-bold text-center">
-            Service-moti: Log Service
+            Service-moti: Log Service📝🚙
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -129,14 +140,15 @@ export default function LogService() {
             </div>
           )}
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Service Details */}
             <div className="space-y-2">
               <Label htmlFor="date">Service Date</Label>
               <Input
                 id="date"
                 name="date"
                 type="date"
-                value={formData.date}
-                onChange={handleChange}
+                value={serviceDetails.date}
+                onChange={handleDetailsChange}
                 required
               />
             </div>
@@ -147,24 +159,61 @@ export default function LogService() {
                 id="mileage"
                 name="mileage"
                 type="number"
-                value={formData.mileage}
-                onChange={handleChange}
+                value={serviceDetails.mileage}
+                onChange={handleDetailsChange}
                 required
               />
             </div>
 
             <div className="space-y-2">
-              <Label>Items Checked/Changed</Label>
-              <div className="grid grid-cols-2 gap-4">
-                {Object.entries(formData.serviceItems).map(([key, value]) => (
+              <Label htmlFor="garageName">Garage Name</Label>
+              <Input
+                id="garageName"
+                name="garageName"
+                type="string"
+                value={serviceDetails.garageName}
+                onChange={handleDetailsChange}
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="mechanicName">Mechanic Name</Label>
+              <Input
+                id="mechanicName"
+                name="mechanicName"
+                type="string"
+                value={serviceDetails.mechanicName}
+                onChange={handleDetailsChange}
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="nextServiceMileage">Next Service Mileage</Label>
+              <Input
+                id="nextServiceMileage"
+                name="nextServiceMileage"
+                type="number"
+                value={serviceDetails.nextServiceMileage}
+                onChange={handleDetailsChange}
+                required
+              />
+            </div>
+
+            {/* Service Items */}
+            <div className="space-y-2">
+              <Label>Service Items</Label>
+              <div className="grid grid-cols-2 gap-5">
+                {Object.entries(serviceItems).map(([key, value]) => (
                   <div key={key} className="space-y-1">
                     <div className="flex items-center space-x-2">
                       <Checkbox
                         id={`${key}-checked`}
                         checked={value.checked}
                         onCheckedChange={(checked) =>
-                          handleItemChange(
-                            key as keyof ServiceItems,
+                          handleServiceItemChange(
+                            key as ServiceItemKey,
                             "checked",
                             checked as boolean
                           )
@@ -183,8 +232,8 @@ export default function LogService() {
                         id={`${key}-changed`}
                         checked={value.changed}
                         onCheckedChange={(checked) =>
-                          handleItemChange(
-                            key as keyof ServiceItems,
+                          handleServiceItemChange(
+                            key as ServiceItemKey,
                             "changed",
                             checked as boolean
                           )
@@ -202,46 +251,14 @@ export default function LogService() {
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="garageName">Garage Name</Label>
-              <Input
-                id="garageName"
-                name="garageName"
-                value={formData.garageName}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="mechanicName">Mechanic Name</Label>
-              <Input
-                id="mechanicName"
-                name="mechanicName"
-                value={formData.mechanicName}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="nextServiceMileage">Next Service Mileage</Label>
-              <Input
-                id="nextServiceMileage"
-                name="nextServiceMileage"
-                type="number"
-                value={formData.nextServiceMileage}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
+            {/* Submit Button */}
             <Button type="submit" className="w-full" disabled={isSubmitting}>
               {isSubmitting ? "Logging Service..." : "Log Service"}
             </Button>
           </form>
         </CardContent>
       </Card>
+      <Toaster />
     </DashboardLayout>
   );
 }

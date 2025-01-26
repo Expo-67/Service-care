@@ -3,14 +3,15 @@ import Service from "../models/service.model.js";
 
 const router = express.Router();
 
-//Route to get all services
-router.get("/history", async (req, res) => {
+// Route to get all services of logged in user
+router.get("/history/:id", async (req, res) => {
   try {
-    const services = await Service.find().sort({ date: -1 }); // Retrieve all services, sorted by date (newest first)
+    const services = await Service.find({ user: req.params.id }).sort({
+      date: -1,
+    });
     res.status(200).json(services);
   } catch (error) {
-    console.error("Error fetching services:", error);
-    res.status(500).json({ message: "Failed to fetch services" });
+    res.status(500).json({ message: "Error retrieving services" });
   }
 });
 

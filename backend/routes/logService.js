@@ -1,4 +1,5 @@
 import express from "express";
+import Service from "../models/service.model.js";
 const router = express.Router();
 router.post("/log", async (req, res) => {
   try {

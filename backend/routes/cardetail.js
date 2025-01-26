@@ -8,11 +8,6 @@ router.post("/cardetails", async (req, res) => {
   const { BrandofCar, ModelofCar, YearofMan, EngineCapacity, carIntake } =
     req.body;
 
-  console.log("brand of car", BrandofCar);
-  console.log("model of car", ModelofCar);
-  console.log("year of man", YearofMan);
-  console.log("engine capacity", EngineCapacity);
-
   if (!BrandofCar || !ModelofCar || !YearofMan || !EngineCapacity) {
     return res.status(400).json({ message: "All fields are required" });
   }

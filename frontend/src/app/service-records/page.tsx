@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import DashboardLayout from "../dashboard-layout/page";
 import {
   Accordion,
@@ -8,42 +9,80 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-const serviceRecords = [
-  {
-    id: "1",
-    date: "2023-05-15",
-    type: "Oil Change",
-    details: "Changed oil and oil filter. Used synthetic 5W-30 oil.",
-  },
-  {
-    id: "2",
-    date: "2023-07-22",
-    type: "Tire Rotation",
-    details: "Rotated tires and checked air pressure.",
-  },
-  {
-    id: "3",
-    date: "2023-09-10",
-    type: "Brake Service",
-    details: "Replaced front brake pads and rotors.",
-  },
-];
+// Define the type for a single service record
+type ServiceRecord = {
+  id: string; // Use a string or number for the ID
+  date: string; // The date the service was logged
+  type: string; // The type of service (e.g., "Oil Change")
+  details: string; // Details about the service performed
+};
 
 export default function ServiceRecords() {
+  // Explicitly type the serviceRecords state as an array of ServiceRecord objects
+  const [serviceRecords, setServiceRecords] = useState<ServiceRecord[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string>("");
+
+  useEffect(() => {
+    const fetchServiceRecords = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/service/history`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch service records");
+        }
+
+        const data: ServiceRecord[] = await response.json();
+        setServiceRecords(data); // Set the fetched records into state
+      } catch (error) {
+        setError(
+          error instanceof Error ? error.message : "Error fetching records"
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchServiceRecords();
+  }, []);
+
   return (
     <DashboardLayout>
       <div className="bg-white shadow-lg rounded-lg p-6">
         <h1 className="text-2xl font-bold mb-4">Service Records</h1>
-        <Accordion type="single" collapsible className="w-full">
-          {serviceRecords.map((record) => (
-            <AccordionItem value={record.id} key={record.id}>
-              <AccordionTrigger>
-                {record.date} - {record.type}
-              </AccordionTrigger>
-              <AccordionContent>{record.details}</AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
+
+        {/* Display loading state */}
+        {loading && <p>Loading service records...</p>}
+
+        {/* Display error message if any */}
+        {error && <p className="text-red-500">{error}</p>}
+
+        {/* Display service records in an accordion */}
+        {!loading && !error && (
+          <Accordion type="single" collapsible className="w-full">
+            {serviceRecords.length > 0 ? (
+              serviceRecords.map((record) => (
+                <AccordionItem value={record.id} key={record.id}>
+                  <AccordionTrigger>
+                    {record.date} - {record.type}
+                  </AccordionTrigger>
+                  <AccordionContent>{record.details}</AccordionContent>
+                </AccordionItem>
+              ))
+            ) : (
+              <p>No service records found</p>
+            )}
+          </Accordion>
+        )}
       </div>
     </DashboardLayout>
   );

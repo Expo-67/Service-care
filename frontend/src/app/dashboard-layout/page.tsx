@@ -17,7 +17,6 @@ const sidebarItems = [
   { icon: DescriptionIcon, text: "Log Service", href: "/log-service" },
   { icon: DescriptionIcon, text: "Service Records", href: "/service-records" },
   { icon: NotificationsIcon, text: "Reminders", href: "/reminders" },
-  { icon: BarChartIcon, text: "Reports", href: "/reports" },
   { icon: EmojiObjectsIcon, text: "AI Suggestions", href: "/ai-suggestions" },
 ];
 
