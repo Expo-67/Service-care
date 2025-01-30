@@ -14,97 +14,68 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
-type Reminder = {
-  _id: string; // MongoDB IDs
-  service: string;
-  date: string;
-};
+import useAuthStore from "../store/useAuthStore"; // auth store
 
 export default function Reminders() {
-  const [reminders, setReminders] = useState<Reminder[]>([]);
+  const { user, reminders, getReminders, createReminder, deleteReminder } =
+    useAuthStore((state) => state);
+  // const [reminders, setReminders] = useState([]);
   const [newService, setNewService] = useState("");
   const [newDate, setNewDate] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  // Fetch reminders from the backend
+  useEffect(() => {
+    console.log("reminders", user);
+  }, []);
+  // Fetch reminders for the current user
   useEffect(() => {
     const fetchReminders = async () => {
+      setIsLoading(true);
       try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/reminder`
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch reminders.");
+        if (!user) {
+          toast.error("User not found. Please log in again.");
+          return;
         }
-        const data = await response.json();
-        setReminders(data);
+        // const { id } = user;
+        await getReminders(user.id);
       } catch (error) {
         console.error("Error fetching reminders:", error);
+        toast.error("Error fetching reminders.");
+      } finally {
+        setIsLoading(false);
       }
     };
-
     fetchReminders();
-  }, []);
+  }, [user]);
 
   // Add a new reminder
-  const addReminder = async () => {
+  const handleAddReminder = async () => {
     if (!newService || !newDate) {
       toast.error("Please fill out both the service and date fields!");
       return;
     }
-
-    try {
-      setIsLoading(true);
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/reminder`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ service: newService, date: newDate }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to add reminder.");
-      }
-
-      const newReminder = await response.json();
-      setReminders([...reminders, newReminder]); // Update state
-      setNewService("");
-      setNewDate("");
-      toast.success("Reminder set successfully! 🎉📌"); // Success notification
-    } catch (error) {
-      console.error("Error adding reminder:", error);
-      toast.error("Failed to add reminder. Please try again.");
-    } finally {
-      setIsLoading(false);
+    if (!user) {
+      toast.error("User not found. Please log in.");
+      return;
     }
+
+    await createReminder(newService, newDate, user.id);
   };
 
   // Delete a reminder
-  const deleteReminder = async (id: string) => {
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/reminder/${id}`,
-        {
-          method: "DELETE",
-        }
-      );
+  // const handleDeleteReminder = async (id) => {
+  //   try {
+  //     if (!response.ok) {
+  //       throw new Error("Failed to delete reminder.");
+  //     }
 
-      if (!response.ok) {
-        throw new Error("Failed to delete reminder.");
-      }
-
-      setReminders(reminders.filter((reminder) => reminder._id !== id));
-      toast.success("Reminder deleted successfully!🗑️");
-    } catch (error) {
-      console.error("Error deleting reminder:", error);
-      toast.error("Failed to delete reminder. Please try again.");
-    }
-  };
+  //     setReminders(reminders.filter((reminder) => reminder._id !== id));
+  //     toast.success("Reminder deleted successfully! 🗑️");
+  //   } catch (error) {
+  //     console.error("Error deleting reminder:", error);
+  //     toast.error("Failed to delete reminder. Please try again.");
+  //   }
+  // };
 
   return (
     <DashboardLayout>
@@ -112,9 +83,9 @@ export default function Reminders() {
       <Toaster position="top-right" reverseOrder={false} />
 
       <div className="bg-white shadow-lg rounded-lg p-6">
-        <h1 className="text-2xl font-bold mb-4">Service Reminders📅</h1>
+        <h1 className="text-2xl font-bold mb-4">Service Reminders 📅</h1>
         <div className="mb-6">
-          <h2 className="text-xl font-semibold mb-2">Add New Reminder🔔</h2>
+          <h2 className="text-xl font-semibold mb-2">Add New Reminder 🔔</h2>
           <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
             <div className="flex-1">
               <Label htmlFor="service">Service</Label>
@@ -134,7 +105,11 @@ export default function Reminders() {
                 onChange={(e) => setNewDate(e.target.value)}
               />
             </div>
-            <Button onClick={addReminder} className="mt-6" disabled={isLoading}>
+            <Button
+              onClick={handleAddReminder}
+              className="mt-6"
+              disabled={isLoading}
+            >
               {isLoading ? "Adding..." : "Add Reminder"}
             </Button>
           </div>

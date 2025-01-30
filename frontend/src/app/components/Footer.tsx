@@ -62,33 +62,12 @@ const Footer = () => {
               </li>
             </ul>
           </div>
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Stay Updated</h3>
-            <form className="space-y-2">
-              <div className="flex">
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="w-full px-3 py-2 text-gray-900 bg-white rounded-l-md focus:outline-none focus:ring-2 focus:ring-red-500"
-                  required
-                />
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-red-600 rounded-r-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-gray-900"
-                >
-                  <Send size={20} />
-                  <span className="sr-only">Subscribe</span>
-                </button>
-              </div>
-              <p className="text-xs text-gray-400">
-                Subscribe to our newsletter for updates and tips.
-              </p>
-            </form>
-          </div>
+          <div></div>
         </div>
         <div className="mt-8 border-t border-gray-700 pt-8 text-center">
           <p className="text-gray-400">
-            &copy; {new Date().getFullYear()} Service-moti. All rights reserved.
+            &copy; {new Date().getFullYear()} Service-moti. @redevops All rights
+            reserved.
           </p>
         </div>
       </div>

@@ -1,12 +1,19 @@
 import express from "express";
 import { CarDetails } from "../models/cardetails.model.js";
+import verifyToken from "../middleware/verifyToken.js";
 
 const router = express.Router();
 
 // POST route to create a new car detail
 router.post("/cardetails", async (req, res) => {
-  const { BrandofCar, ModelofCar, YearofMan, EngineCapacity, carIntake } =
-    req.body;
+  const {
+    BrandofCar,
+    ModelofCar,
+    YearofMan,
+    EngineCapacity,
+    carIntake,
+    userId,
+  } = req.body;
 
   if (!BrandofCar || !ModelofCar || !YearofMan || !EngineCapacity) {
     return res.status(400).json({ message: "All fields are required" });
@@ -14,6 +21,7 @@ router.post("/cardetails", async (req, res) => {
 
   try {
     const newCarDetail = new CarDetails({
+      userId,
       BrandofCar,
       ModelofCar,
       YearofMan,

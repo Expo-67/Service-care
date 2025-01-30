@@ -1,8 +1,10 @@
 // auth.controller.js
 
 import User from "./../models/user.model.js";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
 import generateTokenAndSetCookie from "./../utils/generateTokenAndSetCookie.js";
-
+dotenv.config();
 // Signup Controller
 export const signup = async (req, res) => {
   const { name, email, password } = req.body;
@@ -45,20 +47,29 @@ export const login = async (req, res) => {
   }
 
   // Now you can generate the token with the method defined in the schema
-  const token = user.generateAuthToken();
+  // const token = user.generateAuthToken();
 
   generateTokenAndSetCookie(user, res);
-
-  return res.status(200).json({
-    message: "Login successful",
-    token: token, //token generated and sent
-    userName: user.name, //send user's name
-    userEmail: user.email, //send user's email
-  });
+  // const {_id, name, email} = user;
+  return res.status(200).json(user);
 };
 
 // Logout Controller
 export const logout = (req, res) => {
   res.clearCookie("token");
   return res.status(200).json({ message: "Logged out successfully" });
+};
+// verifying the user
+export const verifyUser = (req, res) => {
+  const token = req.cookies.token;
+  try {
+    if (!token) {
+      return res.status(401).json({ message: "user1 is not authenticated" });
+    }
+    const payload = jwt.verify(token, process.env.JWT_SECRET);
+    res.status(200).json(payload);
+  } catch (error) {
+    res.status(401).json({ message: "user is not authenticated" });
+    console.log(error.message);
+  }
 };

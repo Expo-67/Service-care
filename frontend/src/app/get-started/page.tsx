@@ -13,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import useAuthStore from "../store/useAuthStore";
 
 export default function GetStarted() {
   const router = useRouter();
@@ -37,6 +38,7 @@ export default function GetStarted() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const { user } = useAuthStore();
 
   // Handle general input field changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -89,7 +91,7 @@ export default function GetStarted() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ ...carDetails, carIntake }),
+          body: JSON.stringify({ ...carDetails, carIntake, userId: user.id }),
         }
       );
 

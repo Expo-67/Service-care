@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import brand2 from "../assets/brand2.png";
-
+import Link from "next/link";
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -48,12 +48,12 @@ const Navbar = () => {
               >
                 Sign-up
               </a>
-              <a
+              <Link
                 href="./login"
                 className="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white"
               >
                 Log-in
-              </a>
+              </Link>
             </div>
           </div>
 

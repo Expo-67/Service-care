@@ -4,7 +4,7 @@ const services = [
   {
     name: "Digital Service Records",
     description:
-      "Log and track your car's service history digitally, eliminating the need for paper records.",
+      "Easily log service details digitally, eliminating the need for paper records.",
     icon: Wrench,
   },
   {
@@ -14,48 +14,51 @@ const services = [
     icon: Bell,
   },
   {
-    name: "Performance Insights",
+    name: "Service Record Tracking",
     description:
-      "Get valuable insights and analytics to improve your car's performance and efficiency.",
+      "Track your car's service history effortlessly, maintaining an organized overview of all your vehicle's services.",
     icon: ChartBar,
   },
 ];
 
 const Services = () => {
   return (
-    <div
+    <section
       id="services"
-      className="min-h-screen bg-gradient-to-br from-white to-gray-900 p-4 py-24 sm:py-32"
+      className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-900 py-24 sm:py-32"
     >
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl lg:text-center">
-          <h2 className="text-base font-semibold leading-7 text-red-900">
+        <div className="text-center">
+          <h2 className="text-base font-semibold leading-7 text-red-600">
             Our Services
           </h2>
-          <p className="mt-2 text-3xl font-bold tracking-tight text-black sm:text-4xl">
+          <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
             Everything you need for your car's maintenance
           </p>
         </div>
-        <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
-          <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-3">
+        <div className="mt-20 max-w-2xl mx-auto lg:max-w-none">
+          <dl className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
             {services.map((service) => (
-              <div key={service.name} className="flex flex-col">
-                <dt className="flex items-center gap-x-3 text-base font-semibold leading-7 text-black">
+              <div
+                key={service.name}
+                className="flex flex-col bg-white rounded-lg shadow-lg p-6 transition-transform transform hover:scale-105"
+              >
+                <dt className="flex items-center gap-x-3 text-xl font-semibold leading-7 text-gray-800">
                   <service.icon
-                    className="h-5 w-5 flex-none text-gray-900"
+                    className="h-6 w-6 flex-none text-red-600"
                     aria-hidden="true"
                   />
                   {service.name}
                 </dt>
-                <dd className="mt-4 flex flex-auto flex-col text-base leading-7 text-black">
-                  <p className="flex-auto">{service.description}</p>
+                <dd className="mt-4 flex-grow text-base text-gray-700">
+                  {service.description}
                 </dd>
               </div>
             ))}
           </dl>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

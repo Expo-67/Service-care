@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import background from "../assets/back2.jpg";
 
 const Hero = () => {
@@ -10,20 +9,17 @@ const Hero = () => {
           <div className="lg:w-1/2">
             <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
               Effortless car{" "}
-              <span className="text-gray-400 hover:text-gray-500">
-                maintenance
-              </span>
+              <span className="text-gray-400 hover:text-gray-500">service</span>
               <br />
               Anytime, Anywhere
             </h1>
             <div className="mt-6 max-w-xl">
               <p className="text-xl text-gray-300">
-                We provide an innovative web application that eliminates the
-                need for traditional service cards. Simply log your car's
-                service details, and let Service-moti handle the rest—giving you
-                timely reminders for your next service, tracking parts changed,
-                and offering valuable insights to improve your car's
-                performance.
+                xperience the future of car maintenance with Service-moti web
+                app, eliminating traditional service cards. Log your service
+                details, and let Service-moti handle the rest—providing timely
+                reminders and tracking parts changed/checked and service
+                history.
               </p>
             </div>
             <div className="mt-10">

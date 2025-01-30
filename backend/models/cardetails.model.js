@@ -11,6 +11,11 @@ const carIntake = new Schema({
 
 const carDetailsSchema = new Schema(
   {
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     BrandofCar: {
       type: "String",
       required: true,
