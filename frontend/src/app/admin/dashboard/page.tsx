@@ -5,10 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function AdminDashboard() {
   // Mock data
-  const pendingReports = 5;
-  const totalUsers = 100;
-  const servicesDone = 250;
-  const usersWithNextService = 30;
+  const registerdUsers = 10;
+  const remindersset = 2;
 
   return (
     <AdminLayout>
@@ -16,34 +14,18 @@ export default function AdminDashboard() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card>
           <CardHeader>
-            <CardTitle>Pending Reports</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-3xl font-bold">{pendingReports}</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
             <CardTitle>Total Users</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-bold">{totalUsers}</p>
+            <p className="text-3xl font-bold">{registerdUsers}</p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Services Done</CardTitle>
+            <CardTitle>Scheduled reminders</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-bold">{servicesDone}</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Users with Next Service</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-3xl font-bold">{usersWithNextService}</p>
+            <p className="text-3xl font-bold">{remindersset}</p>
           </CardContent>
         </Card>
       </div>

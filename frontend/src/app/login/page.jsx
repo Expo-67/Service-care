@@ -70,7 +70,7 @@ const LoginPage = () => {
                 Email
               </label>
               <input
-                type="email" // Changed to email
+                type="email"
                 id="email"
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 value={email}
