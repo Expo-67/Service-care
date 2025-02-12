@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import BuildIcon from "@mui/icons-material/Build";
 import PeopleIcon from "@mui/icons-material/People";
-import AssessmentIcon from "@mui/icons-material/Assessment";
+import { Bell } from "lucide-react";
 import PersonIcon from "@mui/icons-material/Person";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import NotificationsIcon from "@mui/icons-material/Notifications";
@@ -17,7 +17,7 @@ const sidebarItems = [
   { icon: DashboardIcon, text: "Dashboard", href: "/admin/dashboard" },
   { icon: BuildIcon, text: "Services", href: "/admin/services" },
   { icon: PeopleIcon, text: "Users", href: "/admin/users" },
-  { icon: AssessmentIcon, text: "Reports", href: "/admin/reports" },
+  { icon: Bell, text: "Reminders", href: "/admin/Remindersad" },
 ];
 
 const profileItems = [
