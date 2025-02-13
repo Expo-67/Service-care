@@ -20,6 +20,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  role: {
+    type: String,
+    enum: ["user", "admin"], // Only allow "user" or "admin"
+    default: "user", // Default is "user"
+  },
 });
 // Method to generate auth token
 userSchema.methods.generateAuthToken = function () {
