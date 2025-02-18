@@ -8,6 +8,7 @@ import logServiceRoutes from "./routes/logService.js";
 import { router as reminderRoutes } from "./routes/Reminder.js";
 import CarDetailsRoutes from "./routes/cardetail.js";
 import userRoutes from "./routes/userRoutes.js";
+import garageRoutes from "./routes/garage.route.js";
 import path from "path";
 
 dotenv.config(); //Load up env files
@@ -33,6 +34,7 @@ app.use(cookieParser()); // parse incoming cookies
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 //Routes
 
+app.use("/api/garage", authRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/service", logServiceRoutes);
 app.use("/api", reminderRoutes);
