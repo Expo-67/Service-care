@@ -5,12 +5,7 @@ const { Schema } = mongoose;
 
 //  Schema
 const garageSchema = new Schema({
-  garageId: {
-    type: Schema.Types.ObjectId,
-    required: true,
-    ref: "Garage",
-  },
-  garageName: {
+  garagename: {
     type: String,
     required: true,
   },

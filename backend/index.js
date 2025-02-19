@@ -34,7 +34,7 @@ app.use(cookieParser()); // parse incoming cookies
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 //Routes
 
-app.use("/api/garage", authRoutes);
+app.use("/api/garage", garageRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/service", logServiceRoutes);
 app.use("/api", reminderRoutes);
