@@ -36,7 +36,8 @@
     "src/app/dashboard-layout/page.tsx",
     "src/app/reminders/page.jsx",
     "src/app/log-service/page.jsx",
-    "src/app/admin/loggarage/page.jsx"
+    "src/app/admin/loggarage/page.jsx",
+    "src/app/garageonboard/page.jsx"
   ],
   "exclude": ["node_modules"]
 }
