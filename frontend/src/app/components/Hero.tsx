@@ -24,7 +24,7 @@ const Hero = () => {
             </div>
             <div className="mt-10">
               <a
-                href="/Register"
+                href="/garageonboard"
                 className="rounded-md bg-gray-900 px-8 py-3 text-lg font-semibold text-white shadow-sm hover:bg-gray-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
               >
                 Get Started
