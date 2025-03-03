@@ -25,7 +25,13 @@ const garageSchema = new Schema(
   },
   { timestamps: true }
 );
-
+// method to generate auth token
+garageSchema.methods.generateAuthToken = function () {
+  const token = jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
+    expiresIn: "7d", // Adjust expiration as needed
+  });
+  return token;
+};
 // Password Hashing Middleware
 garageSchema.pre("save", async function (next) {
   if (!this.isModified("garagePassword")) return next();

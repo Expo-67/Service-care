@@ -1,9 +1,13 @@
 import Garage from "../models/garage.model.js";
-
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+import generateTokenAndSetCookie from "./../utils/generateTokenAndSetCookie.js";
+dotenv.config();
 // Signup Garage Controller
 export const signupGarage = async (req, res) => {
   try {
-    const { garageName, garageLocation, garagePassword } = req.body;
+    const { garageName, garageLocation, garageEmail, garagePassword } =
+      req.body;
 
     // Check if garage already exists
     const existingGarage = await Garage.findOne({ garageName });
@@ -12,10 +16,17 @@ export const signupGarage = async (req, res) => {
     }
 
     // Create new garage
-    const garage = new Garage({ garageName, garageLocation, garagePassword });
+    const garage = new Garage({
+      garageName,
+      garageLocation,
+      garageEmail,
+      garagePassword,
+    });
 
     // Save garage to the database
     await garage.save();
+    // Generate token and set cookie
+    generateTokenAndSetCookie(garage, res);
 
     res.status(201).json({ message: "Garage created successfully" });
   } catch (err) {
@@ -34,7 +45,7 @@ export const loginGarage = async (req, res) => {
     // Check if garage exists
     const existingGarage = await Garage.findOne({ garageName });
     if (!existingGarage) {
-      return res.status(400).json({ message: "Garage does not exist" });
+      return res.status(400).json({ message: "Garage  exists" });
     }
 
     // Compare password

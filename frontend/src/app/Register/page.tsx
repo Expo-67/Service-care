@@ -81,7 +81,9 @@ const SignUpPage = () => {
               className="rounded-full"
             />
           </div>
-          <CardDescription>Create an account to get started📝!</CardDescription>
+          <CardDescription>
+            Create an account for your client🧑‍💼 to get started📝!
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -142,7 +144,7 @@ const SignUpPage = () => {
           <p className="text-sm text-center w-full">
             Already have an account?{" "}
             <a href="/login" className="text-blue-500 hover:underline">
-              Log in
+              Log in 🔐👤
             </a>
           </p>
         </CardFooter>

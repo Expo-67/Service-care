@@ -55,7 +55,9 @@ const LoginPage = () => {
               className="rounded-full"
             />
           </div>
-          <CardDescription>Enter your login details 👤!</CardDescription>
+          <CardDescription>
+            Enter your client 👤 login details 🔐!
+          </CardDescription>
         </CardHeader>
         <h3 className="text-red-500 text-xl text-center">
           {error && "Error logging in"}
@@ -108,7 +110,7 @@ const LoginPage = () => {
           <p className="text-sm text-center">
             Don't have an account?{" "}
             <a href="/Register" className="text-gray-600 hover:underline">
-              Sign up
+              Sign up your client 👤✍️
             </a>
           </p>
         </CardFooter>

@@ -29,11 +29,8 @@ const Services = () => {
     >
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="text-center">
-          <h2 className="text-base font-semibold leading-7 text-red-600">
-            Our Services
-          </h2>
           <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-            Everything you need for your car's maintenance
+            Our Services
           </p>
         </div>
         <div className="mt-20 max-w-2xl mx-auto lg:max-w-none">
@@ -45,7 +42,7 @@ const Services = () => {
               >
                 <dt className="flex items-center gap-x-3 text-xl font-semibold leading-7 text-gray-800">
                   <service.icon
-                    className="h-6 w-6 flex-none text-red-600"
+                    className="h-6 w-6 flex-none text-gray-600"
                     aria-hidden="true"
                   />
                   {service.name}
