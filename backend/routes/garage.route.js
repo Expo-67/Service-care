@@ -8,6 +8,6 @@ const router = express.Router();
 router.post("/signup", signupGarage);
 
 //POST route to log in the garage
-router.post("login", loginGarage);
+router.post("/login", loginGarage);
 
 export default router;

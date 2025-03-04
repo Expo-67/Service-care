@@ -3,12 +3,12 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import generateTokenAndSetCookie from "./../utils/generateTokenAndSetCookie.js";
 dotenv.config();
+
 // Signup Garage Controller
 export const signupGarage = async (req, res) => {
-  try {
-    const { garageName, garageLocation, garageEmail, garagePassword } =
-      req.body;
+  const { garageName, garageLocation, garageEmail, garagePassword } = req.body;
 
+  try {
     // Check if garage already exists
     const existingGarage = await Garage.findOne({ garageName });
     if (existingGarage) {
@@ -25,36 +25,44 @@ export const signupGarage = async (req, res) => {
 
     // Save garage to the database
     await garage.save();
+
     // Generate token and set cookie
     generateTokenAndSetCookie(garage, res);
 
-    res.status(201).json({ message: "Garage created successfully" });
+    return res.status(201).json({
+      message: "Garage created successfully",
+      garage: {
+        name: garage.garageName,
+        location: garage.garageLocation,
+        email: garage.garageEmail,
+      },
+    });
   } catch (err) {
-    console.error("Error creating garage:", err);
-    res
-      .status(500)
-      .json({ message: "Error creating garage", error: err.message });
+    res.status(500).json({ message: "Server error", error: err.message });
   }
 };
 
 // Login Garage Controller
 export const loginGarage = async (req, res) => {
-  try {
-    const { garageName, garagePassword } = req.body;
+  const { garageName, garagePassword } = req.body;
 
+  try {
     // Check if garage exists
     const existingGarage = await Garage.findOne({ garageName });
     if (!existingGarage) {
-      return res.status(400).json({ message: "Garage  exists" });
+      return res.status(400).json({ message: "Invalid credentials" });
     }
 
     // Compare password
     const isMatch = await existingGarage.comparePassword(garagePassword);
     if (!isMatch) {
-      return res.status(400).json({ message: "Invalid garage password" });
+      return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    res.status(200).json({
+    // Generate token and set cookie
+    generateTokenAndSetCookie(existingGarage, res);
+
+    return res.status(200).json({
       message: "Login successful",
       garage: {
         id: existingGarage._id,
@@ -63,9 +71,29 @@ export const loginGarage = async (req, res) => {
       },
     });
   } catch (err) {
-    console.error("Error logging in garage:", err);
-    res
-      .status(500)
-      .json({ message: "Error logging in garage", error: err.message });
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+};
+
+// Logout Garage Controller
+export const logoutGarage = (req, res) => {
+  res.clearCookie("token");
+  return res.status(200).json({ message: "Logged out successfully" });
+};
+
+// Verify Garage
+export const verifyGarage = (req, res) => {
+  const token = req.cookies.token;
+
+  try {
+    if (!token) {
+      return res.status(401).json({ message: "Garage is not authenticated" });
+    }
+
+    const payload = jwt.verify(token, process.env.JWT_SECRET);
+    res.status(200).json(payload);
+  } catch (error) {
+    res.status(401).json({ message: "Garage is not authenticated" });
+    console.log(error.message);
   }
 };
