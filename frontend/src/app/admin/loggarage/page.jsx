@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   Card,
   CardHeader,
@@ -14,16 +15,40 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
 import brand2 from "../../assets/brand2.png";
+import useGarageAuthStore from "../../store/garageAuthStore"; // Correct import
 
-const logGaragepage = () => {
-  // State for form fields
+const LogGaragePage = () => {
+  const router = useRouter();
   const [garageName, setGarageName] = useState("");
-  const [garageLocation, setGarageLocation] = useState("");
-  const [garageEmail, setGarageEmail] = useState("");
   const [garagePassword, setGaragePassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const { login } = useGarageAuthStore(); // Destructure the login function
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const isLoggedIn = await login({ garageName, garagePassword }); // Call the login function
+
+      if (!isLoggedIn) {
+        setError("Wrong garage name or password.");
+        console.log("Wrong garage name or password.");
+      } else {
+        console.log("Garage login successful");
+        router.push("/admin/dashboard");
+      }
+    } catch (err) {
+      console.error("Login error:", err);
+      setError("An error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-white to-gray-800 p-4">
@@ -41,12 +66,22 @@ const logGaragepage = () => {
           </div>
           <CardDescription>Log into your Garage account🔧🏎️!</CardDescription>
         </CardHeader>
+        <h3 className="text-red-500 text-xl text-center">
+          {error && "Error logging in"}
+        </h3>
         <CardContent>
-          <form className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="garageName">Garage Name</Label>
-              <Input
+          <form onSubmit={handleSubmit}>
+            <div className="mb-4">
+              <label
+                htmlFor="garageName"
+                className="block text-gray-700 font-medium mb-2"
+              >
+                Garage Name
+              </label>
+              <input
+                type="text"
                 id="garageName"
+                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 placeholder="Enter your garage name"
                 value={garageName}
                 onChange={(e) => setGarageName(e.target.value)}
@@ -54,12 +89,18 @@ const logGaragepage = () => {
               />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="garagePassword">Garage Password</Label>
+            <div className="mb-6">
+              <label
+                htmlFor="garagePassword"
+                className="block text-gray-700 font-medium mb-2"
+              >
+                Garage Password
+              </label>
               <div className="relative">
-                <Input
-                  id="garagePassword"
+                <input
                   type={showPassword ? "text" : "password"}
+                  id="garagePassword"
+                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   placeholder="Enter your garage password"
                   value={garagePassword}
                   onChange={(e) => setGaragePassword(e.target.value)}
@@ -78,16 +119,17 @@ const logGaragepage = () => {
                 </button>
               </div>
             </div>
-            {error && (
-              <p className="text-sm text-red-500 dark:text-red-400">{error}</p>
-            )}
-            <Button className="w-full" type="submit" disabled={isLoading}>
-              {isLoading ? "logging in..." : "Log in Garage"}
-            </Button>
+
+            <button
+              type="submit"
+              className="w-full p-3 bg-gray-600 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            >
+              {isLoading ? "Logging in..." : "Log in Garage"}
+            </button>
           </form>
         </CardContent>
-        <CardFooter>
-          <p className="text-sm text-center w-full">
+        <CardFooter className="flex flex-col space-y-2">
+          <p className="text-sm text-center">
             Create a new Garage Account?{" "}
             <a
               href="/admin/reggarage"
@@ -102,4 +144,4 @@ const logGaragepage = () => {
   );
 };
 
-export default logGaragepage;
+export default LogGaragePage;

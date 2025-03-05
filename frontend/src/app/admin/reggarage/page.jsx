@@ -1,5 +1,6 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import {
   Card,
   CardHeader,
@@ -15,8 +16,8 @@ import { Label } from "@/components/ui/label";
 import Image from "next/image";
 import brand2 from "../../assets/brand2.png";
 
-const SignupGaragepage = () => {
-  // State for form fields
+const SignupGaragePage = () => {
+  const router = useRouter();
   const [garageName, setGarageName] = useState("");
   const [garageLocation, setGarageLocation] = useState("");
   const [garageEmail, setGarageEmail] = useState("");
@@ -24,6 +25,50 @@ const SignupGaragepage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    setError("");
+  }, [garageName, garageLocation, garageEmail, garagePassword]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/garage/signup`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            garageName,
+            garageLocation,
+            garageEmail,
+            garagePassword,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Garage signup successful:", data);
+        localStorage.setItem("garageToken", data.token);
+        router.push("/admin/loggarage");
+      } else {
+        const errorData = await response.json();
+        setError(errorData.message || "Error during garage signup");
+      }
+    } catch (err) {
+      console.error("Garage signup error:", err);
+      setError("An error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-white to-gray-800 p-4">
@@ -44,7 +89,7 @@ const SignupGaragepage = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="garageName">Garage Name</Label>
               <Input
@@ -125,4 +170,4 @@ const SignupGaragepage = () => {
   );
 };
 
-export default SignupGaragepage;
+export default SignupGaragePage;
