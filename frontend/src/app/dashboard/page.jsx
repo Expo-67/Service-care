@@ -25,6 +25,7 @@ export default function Dashboard() {
     if (!user) router.push("/login");
   }, []);
 
+  //fetching the reminders from the backend
   useEffect(() => {
     const fetchReminders = async () => {
       setIsLoading(true);

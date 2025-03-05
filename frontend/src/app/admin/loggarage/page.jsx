@@ -15,30 +15,35 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
 import brand2 from "../../assets/brand2.png";
-import useGarageAuthStore from "../../store/garageAuthStore"; // Correct import
+import useGarageAuthStore from "../../store/garageAuthStore"; // Zustand garage store for authentication
 
 const LogGaragePage = () => {
-  const router = useRouter();
+  // Initialize the state variables for  the garage name and password and error messsage
+  const router = useRouter(); // to handle page navigation once login go to dashboard
   const [garageName, setGarageName] = useState("");
   const [garagePassword, setGaragePassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const { login } = useGarageAuthStore(); // Destructure the login function
+  //integrate with Zustand to handle the login function
+  const { login } = useGarageAuthStore(); //  login function is in the garageAuthStore it sends the garage name and password to the backend
 
+  //form submission function handle submit
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
+    e.preventDefault(); //prevent the form from refreshing the page
+    setIsLoading(true); // shows that the form is being submitted
     setError("");
 
     try {
       const isLoggedIn = await login({ garageName, garagePassword }); // Call the login function
 
       if (!isLoggedIn) {
+        //if login fails
         setError("Wrong garage name or password.");
         console.log("Wrong garage name or password.");
       } else {
+        //if login is successful
         console.log("Garage login successful");
         router.push("/admin/dashboard");
       }
@@ -50,6 +55,7 @@ const LogGaragePage = () => {
     }
   };
 
+  //User interface for the login page
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-white to-gray-800 p-4">
       <Card className="w-full max-w-md">
@@ -66,8 +72,8 @@ const LogGaragePage = () => {
           </div>
           <CardDescription>Log into your Garage account🔧🏎️!</CardDescription>
         </CardHeader>
-        <h3 className="text-red-500 text-xl text-center">
-          {error && "Error logging in"}
+        <h3 className="text-red-900 font-serif text-center">
+          {error && "🚫 Wrong garage name or password. Please try again! 🔑"}
         </h3>
         <CardContent>
           <form onSubmit={handleSubmit}>
