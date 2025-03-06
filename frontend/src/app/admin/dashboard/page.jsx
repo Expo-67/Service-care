@@ -13,7 +13,7 @@ export default function AdminDashboard() {
   //loadGarage- a function to load the garage data from Zustand store.
   const { garage, loadGarage } = garageAuthStore((state) => state);
 
-  const [garageName, setGarageName] = useState();
+  //const [garageName, setGarageName] = useState();
 
   useEffect(() => {
     loadGarage(); //fetch the logged in garage data from zustand store
@@ -28,7 +28,7 @@ export default function AdminDashboard() {
     //greeting of garage owner
     <AdminLayout>
       <h1 className="text-2xl font-bold mb-6">
-        Hi{garage?.name}👋Welcome to your Garage Admin account🔧🏎️
+        Hi{garageName}👋Welcome to your Garage Admin account🔧🏎️
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card>

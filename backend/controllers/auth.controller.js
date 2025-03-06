@@ -16,9 +16,10 @@ export const signup = async (req, res) => {
   }
 
   try {
-    const user = new User({ name, email, password });
-    await user.save();
+    const user = new User({ name, email, password }); // create the new user
+    await user.save(); // save to database
 
+    // generate token and set cookie
     generateTokenAndSetCookie(user, res);
 
     return res.status(201).json({

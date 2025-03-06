@@ -2,20 +2,19 @@ import Garage from "../models/garage.model.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import generateTokenAndSetCookie from "./../utils/generateTokenAndSetCookie.js";
-dotenv.config();
+dotenv.config(); //load the env variables
 
 // Signup Garage Controller
 export const signupGarage = async (req, res) => {
   const { garageName, garageLocation, garageEmail, garagePassword } = req.body;
 
+  // Check if garage already exists
+  const garageExists = await Garage.findOne({ garageName });
+  if (garageExists) {
+    return res.status(400).json({ message: "Garage already exists" });
+  }
   try {
-    // Check if garage already exists
-    const existingGarage = await Garage.findOne({ garageName });
-    if (existingGarage) {
-      return res.status(400).json({ message: "Garage already exists" });
-    }
-
-    // Create new garage
+    // Create new instance of garage
     const garage = new Garage({
       garageName,
       garageLocation,
@@ -46,33 +45,28 @@ export const signupGarage = async (req, res) => {
 export const loginGarage = async (req, res) => {
   const { garageName, garagePassword } = req.body;
 
-  try {
-    // Check if garage exists
-    const existingGarage = await Garage.findOne({ garageName });
-    if (!existingGarage) {
-      return res.status(400).json({ message: "Invalid credentials" });
-    }
-
-    // Compare password
-    const isMatch = await existingGarage.comparePassword(garagePassword);
-    if (!isMatch) {
-      return res.status(400).json({ message: "Invalid credentials" });
-    }
-
-    // Generate token and set cookie
-    generateTokenAndSetCookie(existingGarage, res);
-
-    return res.status(200).json({
-      message: "Login successful",
-      garage: {
-        id: existingGarage._id,
-        name: existingGarage.garageName,
-        location: existingGarage.garageLocation,
-      },
-    });
-  } catch (err) {
-    res.status(500).json({ message: "Server error", error: err.message });
+  // Check if garage exists
+  const garage = await Garage.findOne({ garageName });
+  if (!garage) {
+    return res.status(400).json({ message: "Invalid credentials" });
   }
+
+  // Compare password
+  const isMatch = await existingGarage.comparePassword(garagePassword);
+  if (!isMatch) {
+    return res.status(400).json({ message: "Invalid credentials" });
+  }
+
+  // Generate token and set cookie
+  generateTokenAndSetCookie(existingGarage, res);
+
+  return res.status(200).json(garage);
+  // message: "Login successful",
+  // garage: {
+  //   id: existingGarage._id,
+  //   name: existingGarage.garageName,
+  //   location: existingGarage.garageLocation,
+  // },
 };
 
 // Logout Garage Controller
