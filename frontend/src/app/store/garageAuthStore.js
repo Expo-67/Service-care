@@ -9,10 +9,6 @@ const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 const garageAuthStore = create(
   persist(
     (set, get) => ({
-      garage: null, // holding the garage data
-      isAuthenticated: false, // Track authentication status
-      loading: false, // track request status
-      error: null, // hold any error that occurs
       //Load garage from the backend and update state
       loadGarage: async () => {
         try {

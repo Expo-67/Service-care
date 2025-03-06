@@ -28,7 +28,7 @@ export default function AdminDashboard() {
     //greeting of garage owner
     <AdminLayout>
       <h1 className="text-2xl font-bold mb-6">
-        Hi{garageName}👋Welcome to your Garage Admin account🔧🏎️
+        Hi{garage.garageName}👋Welcome to your Garage Admin account🔧🏎️
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card>
