@@ -2,9 +2,10 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Home, Wrench, Users, Phone, Rocket } from "lucide-react"; // Import icons
 import brand2 from "../assets/brand2.png";
 import Link from "next/link";
+
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -13,7 +14,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-gray-800 text-white">
+    <nav className="bg-white text-black shadow-md">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-17 items-center justify-between">
           <div className="flex items-center">
@@ -24,30 +25,49 @@ const Navbar = () => {
               height={52}
               className="rounded-full"
             />
-            <span className="ml-2 text-s font-bold">Service-moti</span>
+            <span className="ml-2 text-s font-bold text-black">
+              Service-moti
+            </span>
           </div>
 
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-4">
-              <a
+              <Link
                 href="/"
-                className="rounded-md px-3 py-2 text-sm font-medium hover:bg-gray-800 hover:text-white"
+                className="flex items-center rounded-md px-3 py-2 text-sm font-medium hover:bg-gray-100 hover:text-black"
               >
+                <Home className="mr-2 h-4 w-4" />
                 Home
-              </a>
-              <a
+              </Link>
+              <Link
                 href="#services"
-                className="rounded-md px-3 py-2 text-sm font-medium hover:bg-gray-700 hover:text-white"
+                className="flex items-center rounded-md px-3 py-2 text-sm font-medium hover:bg-gray-100 hover:text-black"
               >
+                <Wrench className="mr-2 h-4 w-4" />
                 Services
-              </a>
+              </Link>
+              <Link
+                href="#aboutus"
+                className="flex items-center rounded-md px-3 py-2 text-sm font-medium hover:bg-gray-100 hover:text-black"
+              >
+                <Users className="mr-2 h-4 w-4" />
+                About Us
+              </Link>
+              <Link
+                href="#contact"
+                className="flex items-center rounded-md px-3 py-2 text-sm font-medium hover:bg-gray-100 hover:text-black"
+              >
+                <Phone className="mr-2 h-4 w-4" />
+                Contact
+              </Link>
               <div className="mt-10">
-                <a
+                <Link
                   href="/garageonboard"
-                  className="rounded-md bg-gray-900 px-6 py-2  font-semibold text-white shadow-sm hover:bg-gray-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+                  className="flex items-center rounded-md bg-gray-900 px-6 py-2 font-semibold text-white shadow-sm hover:bg-gray-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
                 >
+                  <Rocket className="mr-2 h-4 w-4" />
                   Get Started
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -55,7 +75,7 @@ const Navbar = () => {
           <div className="md:hidden">
             <button
               type="button"
-              className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+              className="inline-flex items-center justify-center rounded-md p-2 text-gray-600 hover:bg-gray-100 hover:text-black focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
               aria-controls="mobile-menu"
               aria-expanded={isMenuOpen}
               onClick={toggleMenu}
@@ -74,30 +94,41 @@ const Navbar = () => {
       {isMenuOpen && (
         <div className="md:hidden" id="mobile-menu">
           <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
-            <a
+            <Link
               href="/"
-              className="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-700 hover:text-white"
+              className="flex items-center rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 hover:text-black"
             >
+              <Home className="mr-2 h-4 w-4" />
               Home
-            </a>
-            <a
+            </Link>
+            <Link
               href="#services"
-              className="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-700 hover:text-white"
+              className="flex items-center rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 hover:text-black"
             >
+              <Wrench className="mr-2 h-4 w-4" />
               Services
-            </a>
-            <a
-              href="/register"
-              className="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-700 hover:text-white"
+            </Link>
+            <Link
+              href="#aboutus"
+              className="flex items-center rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 hover:text-black"
             >
-              Sign-up
-            </a>
-            <a
-              href="/login"
-              className="block rounded-md px-3 py-2 text-base font-medium hover:bg-gray-700 hover:text-white bg-red-800"
+              <Users className="mr-2 h-4 w-4" />
+              About Us
+            </Link>
+            <Link
+              href="#contact"
+              className="flex items-center rounded-md px-3 py-2 text-base font-medium hover:bg-gray-100 hover:text-black"
             >
-              Log-in
-            </a>
+              <Phone className="mr-2 h-4 w-4" />
+              Contact
+            </Link>
+            <Link
+              href="/garageonboard"
+              className="flex items-center rounded-md bg-gray-900 px-6 py-2 text-base font-medium text-white shadow-sm hover:bg-gray-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+            >
+              <Rocket className="mr-2 h-4 w-4" />
+              Get Started
+            </Link>
           </div>
         </div>
       )}
