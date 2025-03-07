@@ -38,7 +38,8 @@
     "src/app/log-service/page.jsx",
     "src/app/admin/loggarage/page.jsx",
     "src/app/garageonboard/page.jsx",
-    "src/app/admin/dashboard/page.jsx"
+    "src/app/admin/dashboard/page.jsx",
+    "src/app/clientsonboard/page.jsx"
   ],
   "exclude": ["node_modules"]
 }

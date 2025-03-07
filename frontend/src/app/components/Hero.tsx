@@ -1,45 +1,46 @@
 import Image from "next/image";
-import background from "../assets/back2.jpg";
+import background from "../assets/mech.jpg";
 
 const Hero = () => {
   return (
-    <div className="bg-gradient-to-br from-gray-800 to-gray-400 text-white">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 md:py-24">
-        <div className="lg:flex lg:items-center lg:justify-between">
-          <div className="lg:w-1/2">
-            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
-              Effortless car{" "}
-              <span className="text-gray-400 hover:text-gray-500">service</span>
-              <br />
-              Anytime, Anywhere
-            </h1>
-            <div className="mt-6 max-w-xl">
-              <p className="text-xl text-gray-300">
-                xperience the future of car maintenance with Service-moti web
-                app, eliminating traditional service cards. Log your service
-                details, and let Service-moti handle the rest—providing timely
-                reminders and tracking parts changed/checked and service
-                history.
-              </p>
-            </div>
-            <div className="mt-10">
-              <a
-                href="/garageonboard"
-                className="rounded-md bg-gray-900 px-8 py-3 text-lg font-semibold text-white shadow-sm hover:bg-gray-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
-              >
-                Get Started
-              </a>
-            </div>
+    <div className="relative bg-[#FCE7C8] text-gray-900">
+      <div className="mx-auto max-w-7xl px-6 sm:px-12 lg:px-20 py-16 md:py-24 flex flex-col lg:flex-row items-center">
+        {/* Left Content */}
+        <div className="lg:w-1/2 text-center lg:text-left">
+          <h1 className="text-4xl font-extrabold sm:text-5xl md:text-6xl leading-tight">
+            Your <span className="text-[#F0A04B]">Trusted</span> Car Service
+          </h1>
+          <p className="mt-6 text-lg text-gray-800 max-w-xl">
+            Experience the future of car maintenance with <b>Service-Moti</b>.
+            Log your service details and let us handle the rest—providing timely
+            reminders and tracking your service history.
+          </p>
+          <div className="mt-8 flex justify-center lg:justify-start space-x-4">
+            <a
+              href="/garageonboard"
+              className="rounded-full bg-[#FADA7A] text-gray-900 px-6 py-3 text-lg font-semibold shadow-md hover:bg-[#e6c969] transition"
+            >
+              Get Started 🚀
+            </a>
+            <a
+              href="/about"
+              className="rounded-full border-2 border-[#F0A04B] px-6 py-3 text-lg font-semibold text-[#F0A04B] shadow-md hover:bg-[#F0A04B] hover:text-white transition"
+            >
+              Join Us 🤝
+            </a>
           </div>
-          <div className="mt-10 lg:mt-0 lg:w-1/2">
-            <Image
-              src={background}
-              alt="Car maintenance illustration"
-              width={600}
-              height={400}
-              className="rounded-lg shadow-xl"
-            />
-          </div>
+        </div>
+
+        {/* Right Image */}
+        <div className="mt-10 lg:mt-0 lg:w-1/2 flex justify-center relative">
+          <div className="absolute -z-10 w-72 h-72 bg-[#B1C29E]/20 rounded-full blur-2xl"></div>
+          <Image
+            src={background}
+            alt="Car maintenance illustration"
+            width={500}
+            height={350}
+            className="rounded-lg shadow-xl"
+          />
         </div>
       </div>
     </div>

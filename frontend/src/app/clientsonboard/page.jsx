@@ -6,6 +6,7 @@ import Image from "next/image";
 import brand2 from "../assets/brand2.png";
 import { ArrowLeft } from "lucide-react";
 import { CardTitle } from "@/components/ui/card";
+import Navbar from "../components/Navbar";
 
 export default function App() {
   return (

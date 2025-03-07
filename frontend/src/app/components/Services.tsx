@@ -23,31 +23,25 @@ const services = [
 
 const Services = () => {
   return (
-    <section
-      id="services"
-      className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-900 py-24 sm:py-32"
-    >
+    <section id="services" className="bg-[#FCE7C8] py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="text-center">
-          <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+          <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">
             Our Services
-          </p>
+          </h2>
         </div>
-        <div className="mt-20 max-w-2xl mx-auto lg:max-w-none">
+        <div className="mt-16 max-w-2xl mx-auto lg:max-w-none">
           <dl className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
             {services.map((service) => (
               <div
                 key={service.name}
-                className="flex flex-col bg-white rounded-lg shadow-lg p-6 transition-transform transform hover:scale-105"
+                className="flex flex-col bg-[#B1C29E] rounded-lg shadow-md p-6 transition-all hover:scale-105 hover:bg-[#9DAC89]"
               >
-                <dt className="flex items-center gap-x-3 text-xl font-semibold leading-7 text-gray-800">
-                  <service.icon
-                    className="h-6 w-6 flex-none text-gray-600"
-                    aria-hidden="true"
-                  />
+                <dt className="flex items-center gap-x-3 text-xl font-semibold text-black">
+                  <service.icon className="h-8 w-8 flex-none text-[#F0A04B]" />
                   {service.name}
                 </dt>
-                <dd className="mt-4 flex-grow text-base text-gray-700">
+                <dd className="mt-4 text-base text-gray-800">
                   {service.description}
                 </dd>
               </div>
