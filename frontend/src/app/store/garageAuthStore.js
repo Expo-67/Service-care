@@ -24,7 +24,7 @@ const garageAuthStore = create(
           if (response.ok) {
             const data = await response.json();
             set({ garage: data, isAuthenticated: true, loading: false });
-            console.log(data);
+            console.log("Garage backend data", data);
           } else {
             set({ garage: null, isAuthenticated: false, loading: false });
           }

@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 export default function AdminDashboard() {
-  const router = useRouter; // for navigation
+  const router = useRouter(); // for navigation
   //get the garage data from zustand store
   //garage- is the logged in garage the  data on the cookie consists of id ,name and location
   //loadGarage- a function to load the garage data from Zustand store.
@@ -15,11 +15,20 @@ export default function AdminDashboard() {
 
   //const [garageName, setGarageName] = useState();
 
-  useEffect(() => {
-    loadGarage(); //fetch the logged in garage data from zustand store
+  const [isLoading, setIsLoading] = useState(true);
 
-    if (!garage) router.push("admin/loggarage"); //if not garage  redirect to login page of garage
-  }, []);
+  useEffect(() => {
+    const fetchGarage = async () => {
+      await loadGarage(); // Fetch the logged-in garage data
+      setIsLoading(false); // Set loading to false after fetching
+    };
+
+    fetchGarage();
+  }, [loadGarage]);
+
+  if (isLoading) {
+    return <p>Loading...</p>; // Show a loading message while fetching data
+  }
   // Mock datas
   const registerdUsers = 10;
   const remindersset = 2;
@@ -28,7 +37,7 @@ export default function AdminDashboard() {
     //greeting of garage owner
     <AdminLayout>
       <h1 className="text-2xl font-bold mb-6">
-        Hi{garage.garageName}👋Welcome to your Garage Admin account🔧🏎️
+        Hi{garage?.garageName}👋Welcome to your Garage Admin account🔧🏎️
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card>
