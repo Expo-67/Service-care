@@ -15,42 +15,33 @@ export default function AdminDashboard() {
 
   //const [garageName, setGarageName] = useState();
 
-  const [isLoading, setIsLoading] = useState(true);
-
   useEffect(() => {
-    const fetchGarage = async () => {
-      await loadGarage(); // Fetch the logged-in garage data
-      setIsLoading(false); // Set loading to false after fetching
-    };
+    loadGarage(); //fetch the logged in garage data from zustand store
 
-    fetchGarage();
-  }, [loadGarage]);
-
-  if (isLoading) {
-    return <p>Loading...</p>; // Show a loading message while fetching data
-  }
+    if (!garage) router.push("admin/loggarage"); //if not garage  redirect to login page of garage
+  }, []);
   // Mock datas
-  const registerdUsers = 10;
+  const registerdclients = 10;
   const remindersset = 2;
 
   return (
     //greeting of garage owner
     <AdminLayout>
       <h1 className="text-2xl font-bold mb-6">
-        Hi{garage?.garageName}👋Welcome to your Garage Admin account🔧🏎️
+        Hi {garage?.garageName}👋Welcome to your Garage Admin account🔧🏎️
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card>
           <CardHeader>
-            <CardTitle>Total Users</CardTitle>
+            <CardTitle>Current garage clients</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-bold">{registerdUsers}</p>
+            <p className="text-3xl font-bold">{registerdclients}</p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Scheduled reminders</CardTitle>
+            <CardTitle>Scheduled client reminders</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-bold">{remindersset}</p>

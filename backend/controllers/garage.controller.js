@@ -60,14 +60,27 @@ export const loginGarage = async (req, res) => {
     }
 
     // Generate token and set cookie
-    generateTokenAndSetCookie(garage, res);
-
+    const payload = {
+      id: garage._id,
+      garageName: garage.garageName,
+      garageLocation: garage.garageLocation,
+    };
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: "1d", // token expires in 1 day
+    });
+    // set token in a cookie
+    res.cookie("token", token, {
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000, // token expires in 1 day
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
     return res.status(200).json({
       message: "Login successful",
       garage: {
         id: garage._id,
-        name: garage.garageName,
-        location: garage.garageLocation,
+        garageName: garage.garageName,
+        garageLocation: garage.garageLocation,
       },
     });
   } catch (err) {
