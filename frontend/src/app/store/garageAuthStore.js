@@ -78,6 +78,7 @@ const garageAuthStore = create(
         localStorage.removeItem("garage");
       },
     }),
+
     {
       name: "garage-auth-store", // the name for local storage
       getStorage: () => localStorage,
