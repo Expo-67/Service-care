@@ -6,7 +6,7 @@ const router = express.Router();
 
 // Endpoint to upload profile picture
 router.post(
-  "/profile-picture/:userId",
+  "/garage/profile-picture/:userId",
   upload.single("profilePicture"),
   async (req, res) => {
     try {
@@ -29,12 +29,10 @@ router.post(
         user: updatedUser,
       });
     } catch (error) {
-      res
-        .status(500)
-        .json({
-          message: "Error uploading profile picture",
-          error: error.message,
-        });
+      res.status(500).json({
+        message: "Error uploading profile picture",
+        error: error.message,
+      });
     }
   }
 );

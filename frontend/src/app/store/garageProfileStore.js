@@ -7,10 +7,10 @@ const garageAuthStore = create(
   persist(
     (set, get) => ({
       // State variables
-      garage: null, // Holds the logged-in garage data
-      isAuthenticated: false, // Tracks authentication status
-      loading: false, // Tracks loading state
-      error: null, // Holds any error messages
+      garage: null,
+      isAuthenticated: false,
+      loading: false,
+      error: null,
 
       // Load garage data from the backend
       loadGarage: async () => {
@@ -46,6 +46,35 @@ const garageAuthStore = create(
       // Update the garage object
       setGarage: (updatedGarage) => {
         set({ garage: updatedGarage });
+      },
+
+      // Upload profile picture
+      uploadProfilePicture: async (file) => {
+        set({ loading: true, error: null });
+
+        try {
+          const formData = new FormData();
+          formData.append("profilePicture", file);
+
+          const response = await fetch(
+            `${backendUrl}/api/garage/profile-picture/${get().garage._id}`,
+            {
+              method: "POST",
+              body: formData,
+              credentials: "include",
+            }
+          );
+
+          if (response.ok) {
+            const updatedGarage = await response.json();
+            set({ garage: updatedGarage, loading: false });
+          } else {
+            throw new Error("Failed to upload profile picture");
+          }
+        } catch (error) {
+          console.error("Error uploading profile picture:", error);
+          set({ loading: false, error: error.message });
+        }
       },
 
       // Logout the garage
