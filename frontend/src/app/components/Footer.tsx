@@ -27,11 +27,9 @@ const Footer = () => {
           {/* Middle Section - Text */}
           <div className="flex-1 mb-6 md:mb-0 text-center md:text-left">
             <h2 className="text-2xl font-semibold">
-              Subscribe to our newsletter
+              Subscribe to Service-moti newsletter
             </h2>
-            <p className="text-sm text-gray-200">
-              Get updates on our new updates!
-            </p>
+            <p className="text-sm text-gray-200">Get updates!</p>
           </div>
 
           {/* Right Side - Email Input */}
