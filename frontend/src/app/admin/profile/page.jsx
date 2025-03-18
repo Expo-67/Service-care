@@ -62,7 +62,7 @@ export default function AdminProfile() {
               </Avatar>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="profilePicture">Profile Picture</Label>
+              <Label htmlFor="profilePicture">Garage Profile Picture</Label>
               <Input
                 id="profilePicture"
                 type="file"
@@ -71,21 +71,11 @@ export default function AdminProfile() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="name">Name</Label>
+              <Label htmlFor="name">GarageName</Label>
               <Input
                 id="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
