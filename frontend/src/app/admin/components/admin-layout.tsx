@@ -15,8 +15,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 
 const sidebarItems = [
   { icon: DashboardIcon, text: "Dashboard", href: "/admin/dashboard" },
-  { icon: BuildIcon, text: "Services", href: "/admin/services" },
-  { icon: PeopleIcon, text: "Users", href: "/admin/users" },
+  { icon: PeopleIcon, text: "Clients & Services", href: "/admin/users" },
   { icon: Bell, text: "Reminders", href: "/admin/Remindersad" },
 ];
 
