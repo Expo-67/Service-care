@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import DashboardIcon from "@mui/icons-material/Dashboard";
@@ -12,7 +12,7 @@ import { Bell } from "lucide-react";
 import PersonIcon from "@mui/icons-material/Person";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-
+import garageAuthStore from "@/app/store/garageAuthStore";
 const sidebarItems = [
   { icon: DashboardIcon, text: "Dashboard", href: "/admin/dashboard" },
   { icon: PeopleIcon, text: "Clients & Services", href: "/admin/users" },
@@ -21,7 +21,7 @@ const sidebarItems = [
 
 const profileItems = [
   { icon: PersonIcon, text: "Profile", href: "/admin/profile" },
-  { icon: ExitToAppIcon, text: "Logout", href: "/logout" },
+  { icon: ExitToAppIcon, text: "Logout", href: "/logout", onclick: () => {} }, // for onclick
 ];
 
 export default function AdminLayout({
@@ -30,6 +30,16 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
+  const { logout } = garageAuthStore((state) => state); // Accessing the logout function from garage store
+
+  const handleLogout = () => {
+    logout(); // clear admin session
+    router.push("/garageonboard"); // Redirect the admin to the main log in and sign up page
+  };
+
+  // Assigning the handleLogout function to the onclick event of the logout button
+  profileItems[1].onclick = handleLogout;
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
@@ -85,6 +95,7 @@ export default function AdminLayout({
                 return (
                   <Link
                     key={index}
+                    onClick={item.onclick}
                     href={item.href}
                     className={`flex items-center space-x-3 mt-4 ${
                       pathname === item.href

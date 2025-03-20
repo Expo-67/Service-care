@@ -40,7 +40,8 @@
     "src/app/garageonboard/page.jsx",
     "src/app/admin/dashboard/page.jsx",
     "src/app/clientsonboard/page.jsx",
-    "src/app/admin/profile/page.jsx"
+    "src/app/admin/profile/page.jsx",
+    "src/app/admin/Remindersad/page.jsx"
   ],
   "exclude": ["node_modules"]
 }

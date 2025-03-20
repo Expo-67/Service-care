@@ -110,3 +110,13 @@ export const verifyGarage = (req, res) => {
     console.log(error.message);
   }
 };
+
+// Get all reminders for garage admin
+export const getallReminders = async (req, res) => {
+  try {
+    const reminders = await Reminder.find().populate("userId", "name"); //  reference to the User model
+    res.status(200).json(reminders);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching reminders", error });
+  }
+};

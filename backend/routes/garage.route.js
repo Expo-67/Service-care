@@ -5,6 +5,7 @@ import {
   loginGarage,
   logoutGarage,
   verifyGarage,
+  getallReminders,
 } from "../controllers/garage.controller.js";
 import garageToken from "../middleware/garageToken.js";
 
@@ -21,5 +22,8 @@ router.post("/logout", garageToken, logoutGarage);
 
 //Route to verify garage and garage GET request
 router.get("/verifygarage", verifyGarage);
+
+//Route to get all reminders for garage admin
+router.get("/getallreminders", getallReminders);
 
 export default router;
